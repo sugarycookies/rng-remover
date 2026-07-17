@@ -14,10 +14,11 @@ import java.util.concurrent.atomic.AtomicLong;
 @Mixin(LegacyRandomSource.class)
 public abstract class LegacyRandomSourceMixin implements BitRandomSource {
 
-    @Inject(method = "next", at = @At("HEAD"))
+    @Inject(method = "next", at = @At("HEAD"), cancellable = true)
     public void quellNext(final int bits, CallbackInfoReturnable<Integer> cir) {
-        if (!rngData.rngActive_Legacy) {
-            long newSeed = rngData.legacySeed * 25214903917L + 11L & 281474976710655L;
+        rngData data = new rngData();
+        if (!data.rngActive_Legacy) {
+            long newSeed = data.legacySeed * 25214903917L + 11L & 281474976710655L;
             cir.setReturnValue((int)(newSeed >> 48 - bits));
         }
     }

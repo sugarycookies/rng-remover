@@ -16,10 +16,11 @@ public abstract class Xoroshiro128PlusPlusMixin {
 
     @Inject(method = "nextLong", at = @At("HEAD"), cancellable = true)
     private void quellNextLong(CallbackInfoReturnable<Long> cir) {
-        if (!rngData.rngActive_Xoroshiro) {
-            this.seedLo = rngData.xoroshiroSeedLo;
-            this.seedHi = rngData.xoroshiroSeedHi;
-            cir.setReturnValue(Long.rotateLeft(this.seedLo + this.seedHi, 17) + rngData.xoroshiroSeedLo);
+        rngData data = new rngData();
+        if (!data.rngActive_Xoroshiro) {
+            this.seedLo = data.xoroshiroSeedLo;
+            this.seedHi = data.xoroshiroSeedHi;
+            cir.setReturnValue(Long.rotateLeft(this.seedLo + this.seedHi, 17) + data.xoroshiroSeedLo);
         }
     }
 }

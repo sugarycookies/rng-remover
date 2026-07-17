@@ -1,11 +1,11 @@
 package vibenexor.rngremover;
 
 public class rngData {
-    public static boolean rngActive_Xoroshiro;
-    public static boolean rngActive_Legacy;
-    public static long xoroshiroSeedHi;
-    public static long xoroshiroSeedLo;
-    public static long legacySeed;
+    public boolean rngActive_Xoroshiro;
+    public boolean rngActive_Legacy;
+    public long xoroshiroSeedHi;
+    public long xoroshiroSeedLo;
+    public long legacySeed;
 
     public rngData() {
         rngActive_Xoroshiro = true;
