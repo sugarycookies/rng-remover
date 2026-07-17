@@ -1,0 +1,14 @@
+{
+	"required": true,
+	"package": "vibenexor.rngremover.client.mixin",
+	"compatibilityLevel": "JAVA_25",
+	"client": [
+      "Xoroshiro128PlusPlusMixin"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	},
+	"overwrites": {
+		"requireAnnotations": true
+	}
+}
