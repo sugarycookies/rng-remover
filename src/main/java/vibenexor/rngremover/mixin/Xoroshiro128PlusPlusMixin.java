@@ -6,21 +6,26 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import vibenexor.rngremover.rngData;
+import vibenexor.rngremover.RNGData;
 
 @Mixin(Xoroshiro128PlusPlus.class)
 public abstract class Xoroshiro128PlusPlusMixin {
 
-    @Shadow private long seedLo;
-    @Shadow private long seedHi;
+  @Shadow
+  private long seedLo;
+  @Shadow
+  private long seedHi;
 
-    @Inject(method = "nextLong", at = @At("HEAD"), cancellable = true)
-    private void quellNextLong(CallbackInfoReturnable<Long> cir) {
-        rngData data = new rngData();
-        if (!data.rngActive_Xoroshiro) {
-            this.seedLo = data.xoroshiroSeedLo;
-            this.seedHi = data.xoroshiroSeedHi;
-            cir.setReturnValue(Long.rotateLeft(this.seedLo + this.seedHi, 17) + data.xoroshiroSeedLo);
-        }
+  @Inject(method = "nextLong", at = @At("HEAD"), cancellable = true)
+  private void quellNextLong(CallbackInfoReturnable<Long> cir) {
+
+    if (RNGData.disableXoroshiro) {
+
+      this.seedLo = RNGData.xoroshiroSeedLo;
+      this.seedHi = RNGData.xoroshiroSeedHi;
+
+      // cir.setReturnValue(Long.rotateLeft(this.seedLo + this.seedHi, 17) + RNGData.xoroshiroSeedLo);
+      cir.setReturnValue(this.seedHi);
     }
+  }
 }
