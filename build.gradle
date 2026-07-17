@@ -15,6 +15,12 @@ repositories {
 }
 
 loom {
+
+    def aw = file("src/main/resources/rngremover.accesswidener")
+    if (aw.exists()) {
+        accessWidenerPath.set(aw)
+    }
+
 	splitEnvironmentSourceSets()
 
 	mods {

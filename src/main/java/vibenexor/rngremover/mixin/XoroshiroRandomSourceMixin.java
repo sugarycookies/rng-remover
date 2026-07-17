@@ -11,6 +11,7 @@ public abstract class XoroshiroRandomSourceMixin {
 
   @ModifyVariable(method = "setSeed", at = @At("HEAD"), name = "seed")
   private long setSeed(long seed) {
+
     return RNGData.legacySeed;
   }
 }
