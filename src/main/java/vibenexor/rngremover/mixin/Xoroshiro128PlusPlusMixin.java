@@ -17,14 +17,13 @@ public abstract class Xoroshiro128PlusPlusMixin {
   private long seedHi;
 
   @Inject(method = "nextLong", at = @At("HEAD"), cancellable = true)
-  private void quellNextLong(CallbackInfoReturnable<Long> cir) {
+  private void rngremover$nextLong(CallbackInfoReturnable<Long> cir) {
 
     if (RNGData.disableXoroshiro) {
 
       this.seedLo = RNGData.xoroshiroSeedLo;
       this.seedHi = RNGData.xoroshiroSeedHi;
 
-      // cir.setReturnValue(Long.rotateLeft(this.seedLo + this.seedHi, 17) + RNGData.xoroshiroSeedLo);
       cir.setReturnValue(this.seedHi);
     }
   }

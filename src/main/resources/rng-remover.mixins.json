@@ -5,8 +5,7 @@
 	"mixins": [
     "DirtyMarkingRandomSourceMixin",
     "LegacyRandomSourceMixin",
-    "LocateCommandMixin",
-    "MinecraftServerMixin",
+    "MarsagliaPolarGaussianMixin",
     "RandomSourceMixin",
     "RandomSupportMixin",
     "SingleThreadedRandomSourceMixin",
