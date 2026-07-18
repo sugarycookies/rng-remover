@@ -10,8 +10,7 @@ import vibenexor.rngremover.RNGData;
 public abstract class XoroshiroRandomSourceMixin {
 
   @ModifyVariable(method = "setSeed", at = @At("HEAD"), name = "seed")
-  private long setSeed(long seed) {
-
+  private long rngremover$setSeed(long seed) {
     return RNGData.legacySeed;
   }
 }

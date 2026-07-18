@@ -17,7 +17,7 @@ public abstract class Xoroshiro128PlusPlusMixin {
   private long seedHi;
 
   @Inject(method = "nextLong", at = @At("HEAD"), cancellable = true)
-  private void quellNextLong(CallbackInfoReturnable<Long> cir) {
+  private void rngremover$nextLong(CallbackInfoReturnable<Long> cir) {
 
     if (RNGData.disableXoroshiro) {
 

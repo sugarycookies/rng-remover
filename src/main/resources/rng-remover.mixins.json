@@ -1,23 +1,22 @@
 {
-	"required": true,
-	"package": "vibenexor.rngremover.mixin",
-	"compatibilityLevel": "JAVA_25",
-	"mixins": [
-    "DirtyMarkingRandomSourceMixin",
+  "required": true,
+  "package": "vibenexor.rngremover.mixin",
+  "compatibilityLevel": "JAVA_25",
+  "mixins": [
     "LegacyRandomSourceMixin",
-    "LocateCommandMixin",
-    "MinecraftServerMixin",
+    "MarsagliaPolarGaussianMixin",
+    "MthMixin",
     "RandomSourceMixin",
     "RandomSupportMixin",
     "SingleThreadedRandomSourceMixin",
     "ThreadSafeLegacyRandomSourceMixin",
     "Xoroshiro128PlusPlusMixin",
     "XoroshiroRandomSourceMixin"
-	],
-	"injectors": {
-		"defaultRequire": 1
-	},
-	"overwrites": {
-		"requireAnnotations": true
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "overwrites": {
+    "requireAnnotations": true
 	}
 }

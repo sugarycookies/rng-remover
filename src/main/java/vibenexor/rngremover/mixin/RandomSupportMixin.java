@@ -8,11 +8,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import vibenexor.rngremover.RNGData;
 
 @Mixin(RandomSupport.class)
-public class RandomSupportMixin {
+public abstract class RandomSupportMixin {
 
-//  @Inject(at = @At("HEAD"), method = "generateUniqueSeed", cancellable = true)
-//  private static void rngremover$generateUniqueSeed(CallbackInfoReturnable<Long> cir) {
-//
-//    // cir.setReturnValue(RNGData.legacySeed);
-//  }
+    @Inject(at = @At("HEAD"), method = "generateUniqueSeed", cancellable = true)
+    private static void rngremover$generateUniqueSeed(CallbackInfoReturnable<Long> cir) {
+
+        cir.setReturnValue(RNGData.legacySeed);
+    }
 }
