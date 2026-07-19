@@ -1,0 +1,15 @@
+{
+  "options.RNGOptions.gaussian": "Marsaglia Polar Gaussian",
+  "options.RNGOptions.gaussian.tooltip": "Controls ?. If other RNG types are disabled, this must be enabled to prevent a crash.",
+  "options.RNGOptions.legacy": "Legacy Random",
+  "options.RNGOptions.legacy.tooltip": "Controls some structures, especially older ones like fortresses and strongholds.",
+  "options.RNGOptions.mobFix": "Fix Mobs",
+  "options.RNGOptions.mobFix.tooltip": "Fixes a problem when disabling Legacy Random where mob UUIDs will not be random, causing them to fail spawning.",
+  "options.RNGOptions.singleThreaded": "Single Threaded Random",
+  "options.RNGOptions.singleThreaded.tooltip": "Controls spawn location(?) and ?.",
+  "options.RNGOptions.threadSafeLegacy": "Thread Safe Legacy Random",
+  "options.RNGOptions.threadSafeLegacy.tooltip": "Controls ?.",
+  "options.RNGOptions.title": "RNG Options",
+  "options.RNGOptions.xoroshiro": "Xoroshiro128++",
+  "options.RNGOptions.xoroshiro.tooltip": "Controls most world generation, including caves and features."
+}

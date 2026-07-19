@@ -21,10 +21,9 @@ public abstract class Xoroshiro128PlusPlusMixin {
 
     if (RNGData.disableXoroshiro) {
 
-      this.seedLo = RNGData.xoroshiroSeedLo;
-      this.seedHi = RNGData.xoroshiroSeedHi;
+      this.seedLo = RNGData.xoroshiroSeed;
+      this.seedHi = RNGData.xoroshiroSeed;
 
-      // cir.setReturnValue(Long.rotateLeft(this.seedLo + this.seedHi, 17) + RNGData.xoroshiroSeedLo);
       cir.setReturnValue(this.seedHi);
     }
   }

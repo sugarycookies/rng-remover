@@ -8,8 +8,7 @@ public class RNGData {
   public static boolean disableGaussian = true; //if legacy and xoroshiro and singlethreaded are disabled this
                                                 //should lock to true to prevent crash
 
-  public static long xoroshiroSeedHi = Long.MAX_VALUE;
-  public static long xoroshiroSeedLo = Long.MAX_VALUE;
+  public static long xoroshiroSeed = Long.MAX_VALUE; //deleted low/hi seed distinction since it only returns one anyway
   public static long legacySeed = Long.MAX_VALUE;
   public static long singleThreadedSeed = Long.MAX_VALUE;
   public static long threadSafeLegacySeed = Long.MAX_VALUE;
