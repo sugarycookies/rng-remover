@@ -5,7 +5,9 @@
   "mixins": [
     "LegacyRandomSourceMixin",
     "MarsagliaPolarGaussianMixin",
+    "MinecraftServerMixin",
     "MthMixin",
+    "PrimaryLevelDataMixin",
     "RandomSourceMixin",
     "RandomSupportMixin",
     "SingleThreadedRandomSourceMixin",
