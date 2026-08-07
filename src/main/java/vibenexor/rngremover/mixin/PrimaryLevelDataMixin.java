@@ -14,12 +14,13 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import vibenexor.rngremover.RNGData;
+import vibenexor.rngremover.WorldDataRNGDataAccessor;
 
 import java.util.Set;
 import java.util.UUID;
 
 @Mixin(PrimaryLevelData.class)
-public abstract class PrimaryLevelDataMixin implements ServerLevelData, WorldData {
+public abstract class PrimaryLevelDataMixin implements ServerLevelData, WorldData, WorldDataRNGDataAccessor {
     @Unique
     public RNGData RNGState; //this should end up being the RNGData that is used in whatever world being played in
 
@@ -35,8 +36,13 @@ public abstract class PrimaryLevelDataMixin implements ServerLevelData, WorldDat
         tag.store("rng_data", RNGData.CODEC, this.RNGState);
     }
 
-    @Unique
+    @Override
     public RNGData RNGState() {
         return this.RNGState;
+    }
+
+    @Unique
+    public void setRNGState(RNGData RNG) {
+        RNGState = RNGData.of(RNG);
     }
 }

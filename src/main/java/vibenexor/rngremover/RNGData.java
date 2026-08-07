@@ -2,6 +2,9 @@ package vibenexor.rngremover;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import org.apache.commons.lang3.StringUtils;
+
+import java.util.OptionalLong;
 
 public class RNGData {
   public static Codec<RNGData> CODEC = RecordCodecBuilder.create((i) -> i.group(
@@ -24,11 +27,11 @@ public class RNGData {
   //up saved as level.dat, so this should mean that the RNGData gets saved already and we don't have to worry more about
   //that hopefully
 
-  public static boolean disableXoroshiro = true;
-  public static boolean disableLegacy = true;
-  public static boolean disableSingleThreaded = true;
-  public static boolean disableThreadSafeLegacy = true;
-  public static boolean disableGaussian = true; //if legacy and xoroshiro and singlethreaded are disabled this
+  public static boolean disableXoroshiro = false;
+  public static boolean disableLegacy = false;
+  public static boolean disableSingleThreaded = false;
+  public static boolean disableThreadSafeLegacy = false;
+  public static boolean disableGaussian = false; //if legacy and xoroshiro and singlethreaded are disabled this
                                                 //should lock to true to prevent crash
 
   public static long xoroshiroSeed = Long.MAX_VALUE; //deleted low/hi seed distinction since it only returns one anyway
@@ -74,6 +77,40 @@ public class RNGData {
   public static RNGData of(boolean dX, boolean dL, boolean dST, boolean dTSL, boolean dG, long xS, long lS, long sTS, long tSLS, double gV, boolean fUR) {
     RNGData rng = new RNGData(dX, dL, dST, dTSL, dG, xS, lS, sTS, tSLS, gV, fUR);
     return rng;
+  }
+
+  public static RNGData of(RNGData data) {
+    RNGData rng = RNGData.of(data.disableXoroshiro(), data.disableLegacy(), data.disableSingleThreaded(), data.disableThreadSafeLegacy(), data.disableGaussian(), data.xoroshiroSeed(), data.legacySeed(), data.singleThreadedSeed(), data.threadSafeLegacySeed(), data.gaussianValue(), data.forceUUIDsRandom());
+    return rng;
+  }
+
+  public void setDisableXoroshiro(boolean x) {
+    disableXoroshiro = x;
+  }
+
+  public void setDisableLegacy(boolean l) {
+    disableXoroshiro = l;
+  }
+
+  public void setXoroshiroSeed(String x) {
+    xoroshiroSeed = RNGData.toLongSeed(x);
+  }
+
+  public void setLegacySeed(String l) {
+    xoroshiroSeed = RNGData.toLongSeed(l);
+  }
+
+  public static long toLongSeed(String seedString) {
+    seedString = seedString.trim();
+    if (StringUtils.isEmpty(seedString)) {
+      return Long.MAX_VALUE;
+    } else {
+      try {
+        return Long.parseLong(seedString);
+      } catch (NumberFormatException exception) {
+        return (long)seedString.hashCode();
+      }
+    }
   }
 
   //just to make the codec work
