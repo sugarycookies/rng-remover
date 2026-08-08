@@ -4,7 +4,10 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.OptionalLong;
+import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 public class RNGData {
   public static Codec<RNGData> CODEC = RecordCodecBuilder.create((i) -> i.group(
@@ -92,12 +95,49 @@ public class RNGData {
     disableXoroshiro = l;
   }
 
+  public void setDisableSingleThreaded(boolean s) {
+    disableSingleThreaded = s;
+  }
+
+  public void setDisableThreadSafeLegacy(boolean t) {
+    disableThreadSafeLegacy = t;
+  }
+
+  public void setDisableGaussian(boolean g) {
+    disableGaussian = g;
+  }
+
   public void setXoroshiroSeed(String x) {
     xoroshiroSeed = RNGData.toLongSeed(x);
   }
 
   public void setLegacySeed(String l) {
     xoroshiroSeed = RNGData.toLongSeed(l);
+  }
+
+  public void setSingleThreadedSeed(String s) {
+    singleThreadedSeed = RNGData.toLongSeed(s);
+  }
+
+  public void setThreadSafeLegacySeed(String t) {
+    threadSafeLegacySeed = RNGData.toLongSeed(t);
+  }
+
+  public void setGaussianValue(String g) throws NoSuchAlgorithmException {
+    g =  g.trim();
+    if (StringUtils.isEmpty(g)) {
+      gaussianValue = 0.0d;
+    } else {
+      try {
+        gaussianValue = Double.parseDouble(g);
+      } catch (NumberFormatException exception) {
+        MessageDigest digest = MessageDigest.getInstance("SHA-256");
+        byte[] hash = digest.digest(g.getBytes(StandardCharsets.UTF_8));
+        ByteBuffer buffer = ByteBuffer.wrap(hash);
+        long step = buffer.getLong();
+        gaussianValue = Double.longBitsToDouble(step);
+      }
+    }
   }
 
   public static long toLongSeed(String seedString) {
@@ -111,6 +151,10 @@ public class RNGData {
         return (long)seedString.hashCode();
       }
     }
+  }
+
+  public void setUUIDs(boolean u) {
+    forceUUIDsRandom = u;
   }
 
   //just to make the codec work

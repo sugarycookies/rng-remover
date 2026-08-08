@@ -11,12 +11,10 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import vibenexor.rngremover.RNGData;
 
+import java.security.NoSuchAlgorithmException;
+
 // currently modeling off of WorldOptionsScreen & CreateWorldScreen, right now it doesn't connect to anything because
-// idrk how to actually do that lol. the main thing left to do is add the buttons for every single value in RNGData
-// and then take whatever is added to uiRNGState and mix it into WorldCreationUIState(?) it isn't modeled off of like
-// VideoSettingsScreen is because coding-wise they're very different due to the nature of the options, since the
-// options in CreateWorldScreen affect the level data, which is more involved with where i'm implementing the RNGData
-// per world (PrimaryLevelData)
+// idrk how to actually do that lol. also button states for Gaussian and UUIDs need to be updated in relation to others
 
 public class RNGOptionsScreen extends Screen {
     private static final Component TITLE = Component.translatable("options.RNGOptions.title");
@@ -33,7 +31,7 @@ public class RNGOptionsScreen extends Screen {
     private static final Tooltip XOROSHIRO_TOOLTIP = Tooltip.create(Component.translatable("options.RNGOptions.xoroshiro.tooltip"));
 
     private static final Component MOB_FIX = Component.translatable("options.RNGOptions.mobFix");
-    private static final Component MOB_FIX_TOOLTIP = Component.translatable("options.RNGOptions.mobFix.tooltip");
+    private static final Tooltip MOB_FIX_TOOLTIP = Tooltip.create(Component.translatable("options.RNGOptions.mobFix.tooltip"));
 
     private static final Component XOROSHIRO_SEED = Component.translatable("options.RNGOptions.xoroshiroSeed");
     private static final Component LEGACY_SEED = Component.translatable("options.RNGOptions.legacySeed");
@@ -61,7 +59,6 @@ public class RNGOptionsScreen extends Screen {
 
     protected void init() {
         this.layout.addToHeader(new StringWidget(TITLE, this.font), LayoutSettings::alignHorizontallyCenter);
-        IntegratedServer singleplayerServer = this.minecraft.getSingleplayerServer();
 
         GridLayout content = (GridLayout)this.layout.addToContents(new GridLayout(0, 0));
         GridLayout.RowHelper gridHelper = content.columnSpacing(8).rowSpacing(4).createRowHelper(2);
@@ -69,7 +66,13 @@ public class RNGOptionsScreen extends Screen {
         gridHelper.addChild(this.createXoroshiroSeedButton());
         gridHelper.addChild(this.createLegacyButton());
         gridHelper.addChild(this.createLegacySeedButton());
-        //add rest of buttons here
+        gridHelper.addChild(this.createSingleThreadedButton());
+        gridHelper.addChild(this.createSingleThreadedSeedButton());
+        gridHelper.addChild(this.createThreadSafeLegacyButton());
+        gridHelper.addChild(this.createThreadSafeLegacySeedButton());
+        gridHelper.addChild(this.createGaussianButton());
+        gridHelper.addChild(this.createGaussianValueButton());
+        gridHelper.addChild(this.createUUIDsButton());
         this.layout.addToFooter(Button.builder(CommonComponents.GUI_DONE, (var1) -> this.onClose()).width(200).build());
         this.layout.visitWidgets((x$0) -> this.addRenderableWidget(x$0));
         this.repositionElements();
@@ -119,6 +122,93 @@ public class RNGOptionsScreen extends Screen {
         return legSeeder;
     }
 
+    private CycleButton<Boolean> createSingleThreadedButton() {
+        CycleButton<Boolean> sinButton = CycleButton.onOffBuilder(false).create(SINGLE_THREADED, (var1, value) -> uiRNGData.setDisableSingleThreaded(value));
+        sinButton.active = true;
+        sinButton.setTooltip(SINGLE_THREADED_TOOLTIP);
+        return sinButton;
+    }
+
+    private EditBox createSingleThreadedSeedButton() {
+        EditBox sinSeeder = new EditBox(this.font, 150, 20, SINGLE_THREADED_SEED) {
+            protected MutableComponent createNarrationMessage() {
+                return super.createNarrationMessage().append(CommonComponents.NARRATION_SEPARATOR).append(SINGLE_THREADED_SEED);
+            }
+        };
+
+        sinSeeder.setHint(SINGLE_THREADED_SEED);
+        sinSeeder.setTooltip(SINGLE_THREADED_SEED_TOOLTIP);
+        sinSeeder.setValue(String.valueOf(uiRNGData.singleThreadedSeed()));
+        sinSeeder.setResponder((value) -> uiRNGData.setSingleThreadedSeed(value));
+
+        return sinSeeder;
+    }
+
+    private CycleButton<Boolean> createThreadSafeLegacyButton() {
+        CycleButton<Boolean> thrButton = CycleButton.onOffBuilder(false).create(THREAD_SAFE, (var1, value) -> uiRNGData.setDisableSingleThreaded(value));
+        thrButton.active = true;
+        thrButton.setTooltip(THREAD_SAFE_TOOLTIP);
+        return thrButton;
+    }
+
+    private EditBox createThreadSafeLegacySeedButton() {
+        EditBox thrSeeder = new EditBox(this.font, 150, 20, THREAD_SAFE_LEGACY_SEED) {
+            protected MutableComponent createNarrationMessage() {
+                return super.createNarrationMessage().append(CommonComponents.NARRATION_SEPARATOR).append(THREAD_SAFE_LEGACY_SEED);
+            }
+        };
+
+        thrSeeder.setHint(THREAD_SAFE_LEGACY_SEED);
+        thrSeeder.setTooltip(THREAD_SAFE_LEGACY_SEED_TOOLIP);
+        thrSeeder.setValue(String.valueOf(uiRNGData.threadSafeLegacySeed()));
+        thrSeeder.setResponder((value) -> uiRNGData.setThreadSafeLegacySeed(value));
+
+        return thrSeeder;
+    }
+
+    private CycleButton<Boolean> createGaussianButton() {
+        CycleButton<Boolean> gauButton = CycleButton.onOffBuilder(false).create(GAUSSIAN, (var1, value) -> uiRNGData.setDisableGaussian(value));
+        if (uiRNGData.disableXoroshiro() && uiRNGData.disableLegacy() && uiRNGData.disableSingleThreaded()) {
+            gauButton.active = false;
+            gauButton.setValue(true);
+        } else {
+            gauButton.active = true;
+        }
+        gauButton.setTooltip(GAUSSIAN_TOOLTIP);
+        return gauButton;
+    }
+
+    private EditBox createGaussianValueButton() {
+        EditBox gauSeeder = new EditBox(this.font, 150, 20, GAUSSIAN_VALUE) {
+            protected MutableComponent createNarrationMessage() {
+                return super.createNarrationMessage().append(CommonComponents.NARRATION_SEPARATOR).append(GAUSSIAN_VALUE);
+            }
+        };
+
+        gauSeeder.setHint(GAUSSIAN_VALUE);
+        gauSeeder.setTooltip(GAUSSIAN_VALUE_TOOLTIP);
+        gauSeeder.setValue(String.valueOf(uiRNGData.gaussianValue()));
+        gauSeeder.setResponder((value) -> {
+            try {
+                uiRNGData.setGaussianValue(value);
+            } catch (NoSuchAlgorithmException e) {
+                throw new RuntimeException(e);
+            }
+        });
+
+        return gauSeeder;
+    }
+
+    private CycleButton<Boolean> createUUIDsButton() {
+        CycleButton<Boolean> UUIDButton = CycleButton.onOffBuilder(false).create(MOB_FIX, (var1, value) -> uiRNGData.setDisableGaussian(value));
+        if (uiRNGData.disableLegacy()) {
+            UUIDButton.active = true;
+        } else {
+            UUIDButton.active = false;
+        }
+        UUIDButton.setTooltip(MOB_FIX_TOOLTIP);
+        return UUIDButton;
+    }
 
     public void onClose() {
         this.minecraft.gui.setScreen(this.lastScreen);

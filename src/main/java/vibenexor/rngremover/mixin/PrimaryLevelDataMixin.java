@@ -41,7 +41,7 @@ public abstract class PrimaryLevelDataMixin implements ServerLevelData, WorldDat
         return this.RNGState;
     }
 
-    @Unique
+    @Override
     public void setRNGState(RNGData RNG) {
         RNGState = RNGData.of(RNG);
     }
