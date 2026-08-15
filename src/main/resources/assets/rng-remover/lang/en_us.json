@@ -1,4 +1,5 @@
 {
+  "options.RNGButton": "Customize RNG...",
   "options.RNGOptions.gaussian": "Marsaglia Polar Gaussian",
   "options.RNGOptions.gaussianValue": "Number output by Gaussian",
   "options.RNGOptions.gaussian.tooltip": "Controls ?. If other RNG types are disabled, this must be enabled to prevent a crash.",

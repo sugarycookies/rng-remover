@@ -5,11 +5,13 @@ import net.minecraft.client.gui.layouts.GridLayout;
 import net.minecraft.client.gui.layouts.HeaderAndFooterLayout;
 import net.minecraft.client.gui.layouts.LayoutSettings;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.screens.worldselection.WorldCreationUiState;
 import net.minecraft.client.server.IntegratedServer;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import vibenexor.rngremover.RNGData;
+import vibenexor.rngremover.WorldDataRNGDataAccessor;
 
 import java.security.NoSuchAlgorithmException;
 
@@ -51,10 +53,15 @@ public class RNGOptionsScreen extends Screen {
 
     private final RNGData uiRNGData;
 
-    public RNGOptionsScreen(final Screen lastScreen) {
+    public RNGOptionsScreen(final Screen lastScreen, WorldCreationUiState uiState) {
+        RNGData uiRNGData1;
         super(TITLE);
         this.lastScreen = lastScreen;
-        this.uiRNGData = new RNGData();
+        uiRNGData1 = new RNGData();
+        if (uiState instanceof WorldDataRNGDataAccessor) {
+            uiRNGData1 = ((WorldDataRNGDataAccessor)uiState).RNGState();
+        }
+        this.uiRNGData = uiRNGData1;
     }
 
     protected void init() {
