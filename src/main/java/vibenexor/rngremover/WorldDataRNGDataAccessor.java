@@ -1,7 +1,39 @@
 package vibenexor.rngremover;
 
 public interface WorldDataRNGDataAccessor {
-    public RNGData RNGState();
+    RNGData RNGState();
 
-    public void setRNGState(RNGData RNG);
+    void setRNGState(RNGData RNG);
+
+    boolean getXoroshiroState();
+
+    boolean getLegacyState();
+
+    boolean getSingleThreadedState();
+
+    boolean getThreadSafeLegacyState();
+
+    boolean getGaussianState();
+
+    long getXoroshiroSeed();
+
+    long getLegacySeed();
+
+    long getSingleThreadedSeed();
+
+    long getThreadSafeLegacySeed();
+
+    double getGaussianValue();
+
+    boolean getUUIDState();
+
+    String getXoroshiroSeedS();
+
+    String getLegacySeedS();
+
+    String getSingleThreadedSeedS();
+
+    String getThreadSafeLegacySeedS();
+
+    String getGaussianValueS();
 }

@@ -22,7 +22,7 @@ import java.util.UUID;
 @Mixin(PrimaryLevelData.class)
 public abstract class PrimaryLevelDataMixin implements ServerLevelData, WorldData, WorldDataRNGDataAccessor {
     @Unique
-    public RNGData RNGState; //this should end up being the RNGData that is used in whatever world being played in
+    public RNGData RNGState;
 
     //initial values for the RNGData, which is just normal stuff
     @Inject(method = "<init>(Ljava/util/UUID;ZLnet/minecraft/world/level/storage/LevelData$RespawnData;JIZLjava/util/Set;Ljava/util/Set;Lnet/minecraft/world/level/LevelSettings;Lnet/minecraft/world/level/storage/PrimaryLevelData$SpecialWorldProperty;Lcom/mojang/serialization/Lifecycle;)V", at = @At("TAIL"))

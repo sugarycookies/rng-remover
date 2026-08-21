@@ -5,6 +5,7 @@ import net.minecraft.client.gui.layouts.GridLayout;
 import net.minecraft.client.gui.layouts.HeaderAndFooterLayout;
 import net.minecraft.client.gui.layouts.LayoutSettings;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.screens.worldselection.CreateWorldScreen;
 import net.minecraft.client.gui.screens.worldselection.WorldCreationUiState;
 import net.minecraft.client.server.IntegratedServer;
 import net.minecraft.network.chat.CommonComponents;
@@ -12,8 +13,11 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import vibenexor.rngremover.RNGData;
 import vibenexor.rngremover.WorldDataRNGDataAccessor;
+import vibenexor.rngremover.client.CreateWorldScreenRNGHaver;
 
 import java.security.NoSuchAlgorithmException;
+
+import static java.lang.IO.print;
 
 // currently modeling off of WorldOptionsScreen & CreateWorldScreen, right now it doesn't connect to anything because
 // idrk how to actually do that lol. also button states for Gaussian and UUIDs need to be updated in relation to others
@@ -53,15 +57,17 @@ public class RNGOptionsScreen extends Screen {
 
     private final RNGData uiRNGData;
 
+    private final WorldCreationUiState state;
+
     public RNGOptionsScreen(final Screen lastScreen, WorldCreationUiState uiState) {
-        RNGData uiRNGData1;
         super(TITLE);
         this.lastScreen = lastScreen;
-        uiRNGData1 = new RNGData();
+        RNGData uiRNGData1 = new RNGData();
         if (uiState instanceof WorldDataRNGDataAccessor) {
             uiRNGData1 = ((WorldDataRNGDataAccessor)uiState).RNGState();
         }
         this.uiRNGData = uiRNGData1;
+        this.state = uiState;
     }
 
     protected void init() {
@@ -82,13 +88,18 @@ public class RNGOptionsScreen extends Screen {
         gridHelper.addChild(this.createUUIDsButton());
         this.layout.addToFooter(Button.builder(CommonComponents.GUI_DONE, (var1) -> this.onClose()).width(200).build());
         this.layout.visitWidgets((x$0) -> this.addRenderableWidget(x$0));
+        this.state.onChanged();
         this.repositionElements();
     }
 
     private CycleButton<Boolean> createXoroshiroButton() {
-        CycleButton<Boolean> xorButton = CycleButton.onOffBuilder(false).create(XOROSHIRO, (var1, value) -> uiRNGData.setDisableXoroshiro(value));
+        CycleButton<Boolean> xorButton = CycleButton.onOffBuilder(uiRNGData.disableXoroshiro()).create(XOROSHIRO, (var1, value) -> uiRNGData.setDisableXoroshiro(value));
         xorButton.active = true;
         xorButton.setTooltip(XOROSHIRO_TOOLTIP);
+        this.state.addListener((data) -> {
+            xorButton.setValue(((WorldDataRNGDataAccessor)data).getXoroshiroState());
+            this.onRNGChange();
+        });
         return xorButton;
     }
 
@@ -97,20 +108,28 @@ public class RNGOptionsScreen extends Screen {
             protected MutableComponent createNarrationMessage() {
                 return super.createNarrationMessage().append(CommonComponents.NARRATION_SEPARATOR).append(XOROSHIRO_SEED);
             }
-        }; //not sure what width it should be
+        };
 
         xorSeeder.setHint(XOROSHIRO_SEED);
         xorSeeder.setTooltip(XOROSHIRO_SEED_TOOLTIP);
         xorSeeder.setValue(String.valueOf(uiRNGData.xoroshiroSeed()));
         xorSeeder.setResponder((value) -> uiRNGData.setXoroshiroSeed(value));
+        this.state.addListener((data) -> {
+            xorSeeder.setValue(((WorldDataRNGDataAccessor)data).getXoroshiroSeedS());
+            this.onRNGChange();
+        });
 
         return xorSeeder;
     }
 
     private CycleButton<Boolean> createLegacyButton() {
-        CycleButton<Boolean> legButton = CycleButton.onOffBuilder(false).create(LEGACY, (var1, value) -> uiRNGData.setDisableLegacy(value));
+        CycleButton<Boolean> legButton = CycleButton.onOffBuilder(uiRNGData.disableLegacy()).create(LEGACY, (var1, value) -> uiRNGData.setDisableLegacy(value));
         legButton.active = true;
         legButton.setTooltip(LEGACY_TOOLTIP);
+        this.state.addListener((data) -> {
+            legButton.setValue(((WorldDataRNGDataAccessor)data).getLegacyState());
+            this.onRNGChange();
+        });
         return legButton;
     }
 
@@ -125,14 +144,22 @@ public class RNGOptionsScreen extends Screen {
         legSeeder.setTooltip(LEGACY_SEED_TOOLTIP);
         legSeeder.setValue(String.valueOf(uiRNGData.legacySeed()));
         legSeeder.setResponder((value) -> uiRNGData.setLegacySeed(value));
+        this.state.addListener((data) -> {
+            legSeeder.setValue(((WorldDataRNGDataAccessor)data).getLegacySeedS());
+            this.onRNGChange();
+        });
 
         return legSeeder;
     }
 
     private CycleButton<Boolean> createSingleThreadedButton() {
-        CycleButton<Boolean> sinButton = CycleButton.onOffBuilder(false).create(SINGLE_THREADED, (var1, value) -> uiRNGData.setDisableSingleThreaded(value));
+        CycleButton<Boolean> sinButton = CycleButton.onOffBuilder(uiRNGData.disableSingleThreaded()).create(SINGLE_THREADED, (var1, value) -> uiRNGData.setDisableSingleThreaded(value));
         sinButton.active = true;
         sinButton.setTooltip(SINGLE_THREADED_TOOLTIP);
+        this.state.addListener((data) -> {
+            sinButton.setValue(((WorldDataRNGDataAccessor)data).getSingleThreadedState());
+            this.onRNGChange();
+        });
         return sinButton;
     }
 
@@ -147,14 +174,22 @@ public class RNGOptionsScreen extends Screen {
         sinSeeder.setTooltip(SINGLE_THREADED_SEED_TOOLTIP);
         sinSeeder.setValue(String.valueOf(uiRNGData.singleThreadedSeed()));
         sinSeeder.setResponder((value) -> uiRNGData.setSingleThreadedSeed(value));
+        this.state.addListener((data) -> {
+            sinSeeder.setValue(((WorldDataRNGDataAccessor)data).getSingleThreadedSeedS());
+            this.onRNGChange();
+        });
 
         return sinSeeder;
     }
 
     private CycleButton<Boolean> createThreadSafeLegacyButton() {
-        CycleButton<Boolean> thrButton = CycleButton.onOffBuilder(false).create(THREAD_SAFE, (var1, value) -> uiRNGData.setDisableSingleThreaded(value));
+        CycleButton<Boolean> thrButton = CycleButton.onOffBuilder(uiRNGData.disableThreadSafeLegacy()).create(THREAD_SAFE, (var1, value) -> uiRNGData.setDisableSingleThreaded(value));
         thrButton.active = true;
         thrButton.setTooltip(THREAD_SAFE_TOOLTIP);
+        this.state.addListener((data) -> {
+            thrButton.setValue(((WorldDataRNGDataAccessor)data).getThreadSafeLegacyState());
+            this.onRNGChange();
+        });
         return thrButton;
     }
 
@@ -169,19 +204,28 @@ public class RNGOptionsScreen extends Screen {
         thrSeeder.setTooltip(THREAD_SAFE_LEGACY_SEED_TOOLIP);
         thrSeeder.setValue(String.valueOf(uiRNGData.threadSafeLegacySeed()));
         thrSeeder.setResponder((value) -> uiRNGData.setThreadSafeLegacySeed(value));
+        this.state.addListener((data) -> {
+            thrSeeder.setValue(((WorldDataRNGDataAccessor)data).getThreadSafeLegacySeedS());
+            this.onRNGChange();
+        });
 
         return thrSeeder;
     }
 
     private CycleButton<Boolean> createGaussianButton() {
-        CycleButton<Boolean> gauButton = CycleButton.onOffBuilder(false).create(GAUSSIAN, (var1, value) -> uiRNGData.setDisableGaussian(value));
-        if (uiRNGData.disableXoroshiro() && uiRNGData.disableLegacy() && uiRNGData.disableSingleThreaded()) {
-            gauButton.active = false;
-            gauButton.setValue(true);
-        } else {
-            gauButton.active = true;
-        }
+        CycleButton<Boolean> gauButton = CycleButton.onOffBuilder(uiRNGData.disableGaussian()).create(GAUSSIAN, (var1, value) -> uiRNGData.setDisableGaussian(value));
+        gauButton.active = true;
         gauButton.setTooltip(GAUSSIAN_TOOLTIP);
+        this.state.addListener((data) -> {
+            gauButton.setValue(((WorldDataRNGDataAccessor)data).getGaussianState());
+            if (((WorldDataRNGDataAccessor)data).getXoroshiroState() && ((WorldDataRNGDataAccessor)data).getLegacyState() && ((WorldDataRNGDataAccessor)data).getSingleThreadedState()) {
+                gauButton.active = false;
+                gauButton.setValue(true);
+            } else {
+                gauButton.active = true;
+            }
+            this.onRNGChange();
+        });
         return gauButton;
     }
 
@@ -202,22 +246,45 @@ public class RNGOptionsScreen extends Screen {
                 throw new RuntimeException(e);
             }
         });
+        this.state.addListener((data) -> {
+            gauSeeder.setValue(((WorldDataRNGDataAccessor)data).getGaussianValueS());
+            this.onRNGChange();
+        });
 
         return gauSeeder;
     }
 
     private CycleButton<Boolean> createUUIDsButton() {
         CycleButton<Boolean> UUIDButton = CycleButton.onOffBuilder(false).create(MOB_FIX, (var1, value) -> uiRNGData.setDisableGaussian(value));
-        if (uiRNGData.disableLegacy()) {
-            UUIDButton.active = true;
-        } else {
-            UUIDButton.active = false;
-        }
+        UUIDButton.active = true;
         UUIDButton.setTooltip(MOB_FIX_TOOLTIP);
+        this.state.addListener((data) -> {
+            if (!((WorldDataRNGDataAccessor)data).getLegacyState()) {
+                UUIDButton.active = false;
+                UUIDButton.setValue(false);
+            } else {
+                UUIDButton.active = true;
+            }
+            this.onRNGChange();
+        });
         return UUIDButton;
     }
 
+    protected void repositionElements() {
+        this.layout.arrangeElements();
+    }
+
     public void onClose() {
+        if (this.lastScreen instanceof CreateWorldScreen) {
+            ((CreateWorldScreenRNGHaver)this.lastScreen).uiStateOf(this.state);
+        }
         this.minecraft.gui.setScreen(this.lastScreen);
-    } //should also set WorldCreationUiState RNGData (when that's implemented) to equal uiRNGData
+    }
+    //should also set WorldCreationUiState RNGData to equal uiRNGData
+
+    public void onRNGChange() {
+        if (this.state instanceof WorldDataRNGDataAccessor) {
+            ((WorldDataRNGDataAccessor)this.state).setRNGState(uiRNGData);
+        }
+    }
 }

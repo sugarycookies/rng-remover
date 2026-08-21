@@ -9,20 +9,22 @@ import net.minecraft.client.gui.screens.worldselection.WorldCreationGameRulesScr
 import net.minecraft.client.gui.screens.worldselection.WorldCreationUiState;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.storage.PrimaryLevelData;
-import org.spongepowered.asm.mixin.Final;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.Unique;
+import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
+import vibenexor.rngremover.RNGData;
 import vibenexor.rngremover.WorldDataRNGDataAccessor;
+import vibenexor.rngremover.client.CreateWorldScreenRNGHaver;
 
 import java.util.Objects;
 
+import static java.lang.IO.print;
+
 @Mixin(CreateWorldScreen.class)
-public abstract class CreateWorldScreenMixin extends Screen {
+public abstract class CreateWorldScreenMixin extends Screen implements CreateWorldScreenRNGHaver {
+    @Mutable
     @Final
     @Shadow
     private WorldCreationUiState uiState;
@@ -38,5 +40,17 @@ public abstract class CreateWorldScreenMixin extends Screen {
                 ((WorldDataRNGDataAccessor)worldData).setRNGState(((WorldDataRNGDataAccessor)uiState).RNGState());
             }
         }
+    }
+
+    @Override
+    public void RNGof(RNGData RNG) {
+        if (uiState instanceof WorldDataRNGDataAccessor) {
+            ((WorldDataRNGDataAccessor)uiState).setRNGState(RNG);
+        }
+    }
+
+    @Override
+    public void uiStateOf(WorldCreationUiState state) {
+        this.uiState = state;
     }
 }
