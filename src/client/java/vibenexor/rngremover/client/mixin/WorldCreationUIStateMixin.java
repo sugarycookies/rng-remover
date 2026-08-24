@@ -121,5 +121,5 @@ public abstract class WorldCreationUIStateMixin implements WorldDataRNGDataAcces
         return Double.toString(x);
     }
 
-    //ADD ALL THIS FOR SETTER FUNCTIONS. USE THOSE IN RNGOPTIONSSCREEN INSTEAD OF UIRNGSTATE
+    //ADD ALL THIS FOR SETTER FUNCTIONS. USE THOSE IN RNGOPTIONSSCREEN INSTEAD OF UIRNGSTATE (possibly)
 }

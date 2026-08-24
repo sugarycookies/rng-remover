@@ -97,8 +97,8 @@ public class RNGOptionsScreen extends Screen {
         xorButton.active = true;
         xorButton.setTooltip(XOROSHIRO_TOOLTIP);
         this.state.addListener((data) -> {
-            xorButton.setValue(((WorldDataRNGDataAccessor)data).getXoroshiroState());
             this.onRNGChange();
+            xorButton.setValue(((WorldDataRNGDataAccessor)data).getXoroshiroState());
         });
         return xorButton;
     }
@@ -115,8 +115,8 @@ public class RNGOptionsScreen extends Screen {
         xorSeeder.setValue(String.valueOf(uiRNGData.xoroshiroSeed()));
         xorSeeder.setResponder((value) -> uiRNGData.setXoroshiroSeed(value));
         this.state.addListener((data) -> {
-            xorSeeder.setValue(((WorldDataRNGDataAccessor)data).getXoroshiroSeedS());
             this.onRNGChange();
+            xorSeeder.setValue(((WorldDataRNGDataAccessor)data).getXoroshiroSeedS());
         });
 
         return xorSeeder;
@@ -127,8 +127,8 @@ public class RNGOptionsScreen extends Screen {
         legButton.active = true;
         legButton.setTooltip(LEGACY_TOOLTIP);
         this.state.addListener((data) -> {
-            legButton.setValue(((WorldDataRNGDataAccessor)data).getLegacyState());
             this.onRNGChange();
+            legButton.setValue(((WorldDataRNGDataAccessor)data).getLegacyState());
         });
         return legButton;
     }
@@ -145,8 +145,8 @@ public class RNGOptionsScreen extends Screen {
         legSeeder.setValue(String.valueOf(uiRNGData.legacySeed()));
         legSeeder.setResponder((value) -> uiRNGData.setLegacySeed(value));
         this.state.addListener((data) -> {
-            legSeeder.setValue(((WorldDataRNGDataAccessor)data).getLegacySeedS());
             this.onRNGChange();
+            legSeeder.setValue(((WorldDataRNGDataAccessor)data).getLegacySeedS());
         });
 
         return legSeeder;
@@ -157,8 +157,8 @@ public class RNGOptionsScreen extends Screen {
         sinButton.active = true;
         sinButton.setTooltip(SINGLE_THREADED_TOOLTIP);
         this.state.addListener((data) -> {
-            sinButton.setValue(((WorldDataRNGDataAccessor)data).getSingleThreadedState());
             this.onRNGChange();
+            sinButton.setValue(((WorldDataRNGDataAccessor)data).getSingleThreadedState());
         });
         return sinButton;
     }
@@ -175,8 +175,8 @@ public class RNGOptionsScreen extends Screen {
         sinSeeder.setValue(String.valueOf(uiRNGData.singleThreadedSeed()));
         sinSeeder.setResponder((value) -> uiRNGData.setSingleThreadedSeed(value));
         this.state.addListener((data) -> {
-            sinSeeder.setValue(((WorldDataRNGDataAccessor)data).getSingleThreadedSeedS());
             this.onRNGChange();
+            sinSeeder.setValue(((WorldDataRNGDataAccessor)data).getSingleThreadedSeedS());
         });
 
         return sinSeeder;
@@ -187,8 +187,8 @@ public class RNGOptionsScreen extends Screen {
         thrButton.active = true;
         thrButton.setTooltip(THREAD_SAFE_TOOLTIP);
         this.state.addListener((data) -> {
-            thrButton.setValue(((WorldDataRNGDataAccessor)data).getThreadSafeLegacyState());
             this.onRNGChange();
+            thrButton.setValue(((WorldDataRNGDataAccessor)data).getThreadSafeLegacyState());
         });
         return thrButton;
     }
@@ -205,8 +205,8 @@ public class RNGOptionsScreen extends Screen {
         thrSeeder.setValue(String.valueOf(uiRNGData.threadSafeLegacySeed()));
         thrSeeder.setResponder((value) -> uiRNGData.setThreadSafeLegacySeed(value));
         this.state.addListener((data) -> {
-            thrSeeder.setValue(((WorldDataRNGDataAccessor)data).getThreadSafeLegacySeedS());
             this.onRNGChange();
+            thrSeeder.setValue(((WorldDataRNGDataAccessor)data).getThreadSafeLegacySeedS());
         });
 
         return thrSeeder;
@@ -217,6 +217,7 @@ public class RNGOptionsScreen extends Screen {
         gauButton.active = true;
         gauButton.setTooltip(GAUSSIAN_TOOLTIP);
         this.state.addListener((data) -> {
+            this.onRNGChange();
             gauButton.setValue(((WorldDataRNGDataAccessor)data).getGaussianState());
             if (((WorldDataRNGDataAccessor)data).getXoroshiroState() && ((WorldDataRNGDataAccessor)data).getLegacyState() && ((WorldDataRNGDataAccessor)data).getSingleThreadedState()) {
                 gauButton.active = false;
@@ -224,7 +225,6 @@ public class RNGOptionsScreen extends Screen {
             } else {
                 gauButton.active = true;
             }
-            this.onRNGChange();
         });
         return gauButton;
     }
@@ -247,8 +247,8 @@ public class RNGOptionsScreen extends Screen {
             }
         });
         this.state.addListener((data) -> {
-            gauSeeder.setValue(((WorldDataRNGDataAccessor)data).getGaussianValueS());
             this.onRNGChange();
+            gauSeeder.setValue(((WorldDataRNGDataAccessor)data).getGaussianValueS());
         });
 
         return gauSeeder;
@@ -259,13 +259,13 @@ public class RNGOptionsScreen extends Screen {
         UUIDButton.active = true;
         UUIDButton.setTooltip(MOB_FIX_TOOLTIP);
         this.state.addListener((data) -> {
+            this.onRNGChange();
             if (!((WorldDataRNGDataAccessor)data).getLegacyState()) {
                 UUIDButton.active = false;
                 UUIDButton.setValue(false);
             } else {
                 UUIDButton.active = true;
             }
-            this.onRNGChange();
         });
         return UUIDButton;
     }
