@@ -13,6 +13,7 @@ import vibenexor.rngremover.RNGData;
 import vibenexor.rngremover.WorldDataRNGDataAccessor;
 
 import java.nio.file.Path;
+import java.security.NoSuchAlgorithmException;
 import java.util.Optional;
 import java.util.OptionalLong;
 
@@ -24,6 +25,8 @@ public abstract class WorldCreationUIStateMixin implements WorldDataRNGDataAcces
     @Inject(method = "<init>", at = @At(value = "TAIL"))
     private void rngremover$WorldCreationUiState(final Path savesFolder, final WorldCreationContext settings, final Optional<ResourceKey<WorldPreset>> preset, final OptionalLong seed, CallbackInfo ci) {
         rngState = new RNGData();
+        System.out.println("New WorldCreationUiState created");
+        Thread.dumpStack();
     }
 
     @Override
@@ -121,5 +124,47 @@ public abstract class WorldCreationUIStateMixin implements WorldDataRNGDataAcces
         return Double.toString(x);
     }
 
-    //ADD ALL THIS FOR SETTER FUNCTIONS. USE THOSE IN RNGOPTIONSSCREEN INSTEAD OF UIRNGSTATE (possibly)
+    public void setXoroshiroState(boolean x) {
+        this.rngState.setDisableXoroshiro(x);
+    }
+
+    public void setLegacyState(boolean x) {
+        this.rngState.setDisableLegacy(x);
+    }
+
+    public void setSingleThreadedState(boolean x) {
+        this.rngState.setDisableSingleThreaded(x);
+    }
+
+    public void setThreadSafeLegacyState(boolean x) {
+        this.rngState.setDisableThreadSafeLegacy(x);
+    }
+
+    public void setGaussianState(boolean x) {
+        this.rngState.setDisableGaussian(x);
+    }
+
+    public void setXoroshiroSeed(String x) {
+        this.rngState.setXoroshiroSeed(x);
+    }
+
+    public void setLegacySeed(String x) {
+        this.rngState.setLegacySeed(x);
+    }
+
+    public void setSingleThreadedSeed(String x) {
+        this.rngState.setSingleThreadedSeed(x);
+    }
+
+    public void setThreadSafeLegacySeed(String x) {
+        this.rngState.setThreadSafeLegacySeed(x);
+    }
+
+    public void setGaussianValue(String x) throws NoSuchAlgorithmException {
+        this.rngState.setGaussianValue(x);
+    }
+
+    public void setUUIDState(boolean x) {
+        this.rngState.setUUIDs(x);
+    }
 }

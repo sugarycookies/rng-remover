@@ -175,7 +175,6 @@ public class RNGOptionsScreen extends Screen {
         sinSeeder.setValue(String.valueOf(uiRNGData.singleThreadedSeed()));
         sinSeeder.setResponder((value) -> uiRNGData.setSingleThreadedSeed(value));
         this.state.addListener((data) -> {
-            this.onRNGChange();
             sinSeeder.setValue(((WorldDataRNGDataAccessor)data).getSingleThreadedSeedS());
         });
 
@@ -183,7 +182,7 @@ public class RNGOptionsScreen extends Screen {
     }
 
     private CycleButton<Boolean> createThreadSafeLegacyButton() {
-        CycleButton<Boolean> thrButton = CycleButton.onOffBuilder(uiRNGData.disableThreadSafeLegacy()).create(THREAD_SAFE, (var1, value) -> uiRNGData.setDisableSingleThreaded(value));
+        CycleButton<Boolean> thrButton = CycleButton.onOffBuilder(uiRNGData.disableThreadSafeLegacy()).create(THREAD_SAFE, (var1, value) -> uiRNGData.setDisableThreadSafeLegacy(value));
         thrButton.active = true;
         thrButton.setTooltip(THREAD_SAFE_TOOLTIP);
         this.state.addListener((data) -> {
@@ -255,7 +254,7 @@ public class RNGOptionsScreen extends Screen {
     }
 
     private CycleButton<Boolean> createUUIDsButton() {
-        CycleButton<Boolean> UUIDButton = CycleButton.onOffBuilder(false).create(MOB_FIX, (var1, value) -> uiRNGData.setDisableGaussian(value));
+        CycleButton<Boolean> UUIDButton = CycleButton.onOffBuilder(false).create(MOB_FIX, (var1, value) -> uiRNGData.setUUIDs(value));
         UUIDButton.active = true;
         UUIDButton.setTooltip(MOB_FIX_TOOLTIP);
         this.state.addListener((data) -> {
@@ -266,6 +265,7 @@ public class RNGOptionsScreen extends Screen {
             } else {
                 UUIDButton.active = true;
             }
+
         });
         return UUIDButton;
     }
@@ -283,8 +283,10 @@ public class RNGOptionsScreen extends Screen {
     //should also set WorldCreationUiState RNGData to equal uiRNGData
 
     public void onRNGChange() {
-        if (this.state instanceof WorldDataRNGDataAccessor) {
-            ((WorldDataRNGDataAccessor)this.state).setRNGState(uiRNGData);
-        }
+        long x = 1;
     }
+
+    //if (this.state instanceof WorldDataRNGDataAccessor) {
+    //            ((WorldDataRNGDataAccessor)this.state).setRNGState(uiRNGData);
+    //        }
 }

@@ -18,7 +18,7 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 import vibenexor.rngremover.client.gui.screens.RNGOptionsScreen;
 
 @Mixin(targets = "net.minecraft.client.gui.screens.worldselection.CreateWorldScreen$MoreTab")
-public class MoreTabMixin extends GridLayoutTab {
+public abstract class MoreTabMixin extends GridLayoutTab {
     public MoreTabMixin(Component title) {
         super(title);
     }
@@ -42,6 +42,7 @@ public class MoreTabMixin extends GridLayoutTab {
 
     @Unique
     private void openRNGOptionsScreen() {
+        System.out.println("CreateWorldScreen instance: " + System.identityHashCode(this$0) + " uiState: " + System.identityHashCode(this$0.getUiState()));
         Minecraft.getInstance().gui.setScreen(new RNGOptionsScreen(this$0, this$0.getUiState()));
     }
 }

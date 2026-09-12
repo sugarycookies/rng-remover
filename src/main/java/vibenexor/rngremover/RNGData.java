@@ -62,19 +62,7 @@ public class RNGData {
   }
 
   public RNGData() {
-    disableXoroshiro = false;
-    disableLegacy = false;
-    disableSingleThreaded = false;
-    disableThreadSafeLegacy = false;
-    disableGaussian = false;
 
-    xoroshiroSeed = Long.MAX_VALUE;
-    legacySeed = Long.MAX_VALUE;
-    singleThreadedSeed = Long.MAX_VALUE;
-    threadSafeLegacySeed = Long.MAX_VALUE;
-    gaussianValue = 0.0;
-
-    forceUUIDsRandom = false;
   }
 
   public static RNGData of(boolean dX, boolean dL, boolean dST, boolean dTSL, boolean dG, long xS, long lS, long sTS, long tSLS, double gV, boolean fUR) {
@@ -92,7 +80,7 @@ public class RNGData {
   }
 
   public void setDisableLegacy(boolean l) {
-    disableXoroshiro = l;
+    disableLegacy = l;
   }
 
   public void setDisableSingleThreaded(boolean s) {
@@ -112,7 +100,7 @@ public class RNGData {
   }
 
   public void setLegacySeed(String l) {
-    xoroshiroSeed = RNGData.toLongSeed(l);
+    legacySeed = RNGData.toLongSeed(l);
   }
 
   public void setSingleThreadedSeed(String s) {
