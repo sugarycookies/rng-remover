@@ -269,7 +269,7 @@ public class RNGOptionsScreen extends Screen {
     }
 
     private CycleButton<Boolean> createUUIDsButton() {
-        CycleButton<Boolean> UUIDButton = CycleButton.onOffBuilder(false).create(MOB_FIX, (var1, value) -> {
+        CycleButton<Boolean> UUIDButton = CycleButton.onOffBuilder(uiRNGData.forceUUIDsRandom()).create(MOB_FIX, (var1, value) -> {
             uiRNGData.setUUIDs(value);
             this.state.onChanged();
         });
