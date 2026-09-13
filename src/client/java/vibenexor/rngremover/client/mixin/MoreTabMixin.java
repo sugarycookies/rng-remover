@@ -42,7 +42,6 @@ public abstract class MoreTabMixin extends GridLayoutTab {
 
     @Unique
     private void openRNGOptionsScreen() {
-        System.out.println("CreateWorldScreen instance: " + System.identityHashCode(this$0) + " uiState: " + System.identityHashCode(this$0.getUiState()));
         Minecraft.getInstance().gui.setScreen(new RNGOptionsScreen(this$0, this$0.getUiState()));
     }
 }

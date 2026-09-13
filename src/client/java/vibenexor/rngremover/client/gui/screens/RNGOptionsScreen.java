@@ -93,7 +93,10 @@ public class RNGOptionsScreen extends Screen {
     }
 
     private CycleButton<Boolean> createXoroshiroButton() {
-        CycleButton<Boolean> xorButton = CycleButton.onOffBuilder(uiRNGData.disableXoroshiro()).create(XOROSHIRO, (var1, value) -> uiRNGData.setDisableXoroshiro(value));
+        CycleButton<Boolean> xorButton = CycleButton.onOffBuilder(uiRNGData.disableXoroshiro()).create(XOROSHIRO, (var1, value) -> {
+            uiRNGData.setDisableXoroshiro(value);
+            this.state.onChanged();
+        });
         xorButton.active = true;
         xorButton.setTooltip(XOROSHIRO_TOOLTIP);
         this.state.addListener((data) -> {
@@ -123,7 +126,10 @@ public class RNGOptionsScreen extends Screen {
     }
 
     private CycleButton<Boolean> createLegacyButton() {
-        CycleButton<Boolean> legButton = CycleButton.onOffBuilder(uiRNGData.disableLegacy()).create(LEGACY, (var1, value) -> uiRNGData.setDisableLegacy(value));
+        CycleButton<Boolean> legButton = CycleButton.onOffBuilder(uiRNGData.disableLegacy()).create(LEGACY, (var1, value) -> {
+            uiRNGData.setDisableLegacy(value);
+            this.state.onChanged();
+        });
         legButton.active = true;
         legButton.setTooltip(LEGACY_TOOLTIP);
         this.state.addListener((data) -> {
@@ -153,7 +159,10 @@ public class RNGOptionsScreen extends Screen {
     }
 
     private CycleButton<Boolean> createSingleThreadedButton() {
-        CycleButton<Boolean> sinButton = CycleButton.onOffBuilder(uiRNGData.disableSingleThreaded()).create(SINGLE_THREADED, (var1, value) -> uiRNGData.setDisableSingleThreaded(value));
+        CycleButton<Boolean> sinButton = CycleButton.onOffBuilder(uiRNGData.disableSingleThreaded()).create(SINGLE_THREADED, (var1, value) -> {
+            uiRNGData.setDisableSingleThreaded(value);
+            this.state.onChanged();
+        });
         sinButton.active = true;
         sinButton.setTooltip(SINGLE_THREADED_TOOLTIP);
         this.state.addListener((data) -> {
@@ -182,7 +191,10 @@ public class RNGOptionsScreen extends Screen {
     }
 
     private CycleButton<Boolean> createThreadSafeLegacyButton() {
-        CycleButton<Boolean> thrButton = CycleButton.onOffBuilder(uiRNGData.disableThreadSafeLegacy()).create(THREAD_SAFE, (var1, value) -> uiRNGData.setDisableThreadSafeLegacy(value));
+        CycleButton<Boolean> thrButton = CycleButton.onOffBuilder(uiRNGData.disableThreadSafeLegacy()).create(THREAD_SAFE, (var1, value) -> {
+            uiRNGData.setDisableThreadSafeLegacy(value);
+            this.state.onChanged();
+        });
         thrButton.active = true;
         thrButton.setTooltip(THREAD_SAFE_TOOLTIP);
         this.state.addListener((data) -> {
@@ -212,7 +224,10 @@ public class RNGOptionsScreen extends Screen {
     }
 
     private CycleButton<Boolean> createGaussianButton() {
-        CycleButton<Boolean> gauButton = CycleButton.onOffBuilder(uiRNGData.disableGaussian()).create(GAUSSIAN, (var1, value) -> uiRNGData.setDisableGaussian(value));
+        CycleButton<Boolean> gauButton = CycleButton.onOffBuilder(uiRNGData.disableGaussian()).create(GAUSSIAN, (var1, value) -> {
+            uiRNGData.setDisableGaussian(value);
+            this.state.onChanged();
+        });
         gauButton.active = true;
         gauButton.setTooltip(GAUSSIAN_TOOLTIP);
         this.state.addListener((data) -> {
@@ -254,7 +269,10 @@ public class RNGOptionsScreen extends Screen {
     }
 
     private CycleButton<Boolean> createUUIDsButton() {
-        CycleButton<Boolean> UUIDButton = CycleButton.onOffBuilder(false).create(MOB_FIX, (var1, value) -> uiRNGData.setUUIDs(value));
+        CycleButton<Boolean> UUIDButton = CycleButton.onOffBuilder(false).create(MOB_FIX, (var1, value) -> {
+            uiRNGData.setUUIDs(value);
+            this.state.onChanged();
+        });
         UUIDButton.active = true;
         UUIDButton.setTooltip(MOB_FIX_TOOLTIP);
         this.state.addListener((data) -> {
