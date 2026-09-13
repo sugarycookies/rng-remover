@@ -1,4 +1,5 @@
 {
+  "commands.getrngstate": "Xoroshiro128++: %s\nXoroshiro128++ seed: %s\nLegacy: %s\nLegacy seed: %s\nSingle threaded: %s\nSingle threaded seed: %s\nThread safe legacy: %s\nThread safe legacy seed: %s\nMarsaglia polar Gaussian: %s\nMarsaglia polar Gaussian value: %s\nMob fix: %s",
   "options.RNGButton": "Customize RNG",
   "options.RNGOptions.gaussian": "Gaussian Disable",
   "options.RNGOptions.gaussianValue": "Number output by Gaussian",
