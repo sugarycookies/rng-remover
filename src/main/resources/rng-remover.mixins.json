@@ -3,15 +3,18 @@
   "package": "vibenexor.rngremover.mixin",
   "compatibilityLevel": "JAVA_25",
   "mixins": [
+    "BitRandomSourceMixin",
     "LegacyRandomSourceMixin",
     "MarsagliaPolarGaussianMixin",
     "MinecraftServerMixin",
     "MthMixin",
+    "PerlinNoiseMixin",
     "PrimaryLevelDataMixin",
     "RandomSourceMixin",
     "RandomSupportMixin",
     "SingleThreadedRandomSourceMixin",
     "ThreadSafeLegacyRandomSourceMixin",
+    "WorldgenRandomMixin",
     "Xoroshiro128PlusPlusMixin",
     "XoroshiroRandomSourceMixin"
   ],

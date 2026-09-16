@@ -17,18 +17,20 @@ public abstract class SingleThreadedRandomSourceMixin implements BitRandomSource
 
   @Inject(method = "setSeed", at = @At("HEAD"))
   private void rngremover$setSeed(long seed, CallbackInfo ci) {
-    this.seed = RNGData.singleThreadedSeed;
+    if (RNGData.disableSingleThreaded) {
+      this.seed = RNGData.singleThreadedSeed;
+    }
   }
 
   @Inject(method = "next", at = @At("HEAD"), cancellable = true)
   public void rngremover$next(final int bits, CallbackInfoReturnable<Integer> cir) {
-
     if (RNGData.disableSingleThreaded) {
-
-      this.seed = RNGData.singleThreadedSeed * 25214903917L + 11L & 281474976710655L;
-      long newSeed = this.seed * 25214903917L + 11L & 281474976710655L;
-      this.seed = newSeed;
-      cir.setReturnValue((int)(newSeed >> 48 - bits));
+      long constrained = (int) (RNGData.singleThreadedSeed >> (48 - bits));
+      if (constrained < 0) {
+        cir.setReturnValue(0);
+      } else {
+        cir.setReturnValue((int)constrained);
+      }
     }
   }
 }

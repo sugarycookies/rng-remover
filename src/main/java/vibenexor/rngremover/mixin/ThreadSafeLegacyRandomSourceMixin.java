@@ -18,21 +18,15 @@ public class ThreadSafeLegacyRandomSourceMixin {
 
   @Inject(method = "setSeed", at = @At("HEAD"))
   private void rngremover$setSeed(long seed, CallbackInfo ci) {
-    this.seed.set(RNGData.threadSafeLegacySeed);
+    if (RNGData.disableThreadSafeLegacy) {
+      this.seed.set(RNGData.threadSafeLegacySeed);
+    }
   }
 
   @Inject(at = @At("HEAD"), method = "next", cancellable = true)
   private void rngremover$next(int bits, CallbackInfoReturnable<Integer> cir) {
     if (RNGData.disableThreadSafeLegacy) {
-
-      long oldSeed;
-      long nextSeed;
-      do {
-        oldSeed = this.seed.get();
-        nextSeed = oldSeed * 25214903917L + 11L & 281474976710655L;
-      } while (!this.seed.compareAndSet(oldSeed, nextSeed));
-
-      cir.setReturnValue((int) (nextSeed >>> 48 - bits));
+      cir.setReturnValue((int)(RNGData.threadSafeLegacySeed >> (48 - bits)));
     }
   }
 }

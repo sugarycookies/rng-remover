@@ -12,7 +12,8 @@ public abstract class RandomSupportMixin {
 
     @Inject(at = @At("HEAD"), method = "generateUniqueSeed", cancellable = true)
     private static void rngremover$generateUniqueSeed(CallbackInfoReturnable<Long> cir) {
-
-        cir.setReturnValue(RNGData.legacySeed);
+        if (RNGData.disableLegacy) {
+            cir.setReturnValue(RNGData.legacySeed);
+        }
     }
 }

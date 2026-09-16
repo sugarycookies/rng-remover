@@ -1,18 +1,18 @@
 {
 	"schemaVersion": 1,
 	"id": "rng-remover",
-	"version": "${version}",
+	"version": "1.0.0",
 	"name": "RNG Remover",
-	"description": "This is an example description! Tell everyone what your mod is about!",
+	"description": "Optionally remove the RNG from your Minecraft world in multiple ways, and make it return a different number.",
 	"authors": [
-		"Me!"
+		"VI-Benexor"
 	],
 	"contact": {
-		"homepage": "https://fabricmc.net/",
-		"sources": "https://github.com/FabricMC/fabric-example-mod"
+		"email": "vibenexor@gmail.com",
+		"sources": "https://github.com/sugarycookies/rng-remover"
 	},
 	"license": "CC0-1.0",
-	"icon": "assets/rng-remover/icon.png",
+	"icon": "assets/rng-remover/RNG Remover cover.png",
 	"environment": "*",
 	"entrypoints": {
 		"main": [

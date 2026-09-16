@@ -38,6 +38,8 @@ public interface WorldDataRNGDataAccessor {
 
     boolean getUUIDState();
 
+    boolean getUnfixFarlands();
+
     String getXoroshiroSeedS();
 
     String getLegacySeedS();
@@ -69,6 +71,8 @@ public interface WorldDataRNGDataAccessor {
     void setGaussianValue(String x) throws NoSuchAlgorithmException;
 
     void setUUIDState(boolean x);
+
+    void setUnfixFarlands(boolean x);
 
     void PrimaryLevelDataAgain(final @Nullable UUID singlePlayerUUID, final boolean wasModded, final LevelData.RespawnData respawnData, final long gameTime, final int version, final boolean initialized, final Set<String> knownServerBrands, final Set<String> removedFeatureFlags, final LevelSettings settings, final PrimaryLevelData.SpecialWorldProperty specialWorldProperty, final Lifecycle worldGenSettingsLifecycle);
 

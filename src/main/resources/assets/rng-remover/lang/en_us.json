@@ -1,19 +1,21 @@
 {
-  "commands.getrngstate": "Xoroshiro128++: %s\nXoroshiro128++ seed: %s\nLegacy: %s\nLegacy seed: %s\nSingle threaded: %s\nSingle threaded seed: %s\nThread safe legacy: %s\nThread safe legacy seed: %s\nMarsaglia polar Gaussian: %s\nMarsaglia polar Gaussian value: %s\nMob fix: %s",
+  "commands.getrngstate": "Xoroshiro128++: %s\nXoroshiro128++ seed: %s\nLegacy: %s\nLegacy seed: %s\nSingle threaded: %s\nSingle threaded seed: %s\nThread safe legacy: %s\nThread safe legacy seed: %s\nMarsaglia polar Gaussian: %s\nMarsaglia polar Gaussian value: %s\nMob fix: %s\nFarlands state: %s",
   "options.RNGButton": "Customize RNG",
+  "options.RNGButton.farlands": "Unfix Farlands",
+  "options.RNGButton.farlands.tooltip": "Removes the noise overflow fix that pushed the farlands out of vanilla bounds.",
   "options.RNGOptions.gaussian": "Gaussian Disable",
   "options.RNGOptions.gaussianValue": "Number output by Gaussian",
   "options.RNGOptions.gaussian.tooltip": "Controls ?. If other RNG types are disabled, this must be enabled to prevent a crash.",
-  "options.RNGOptions.gaussianValue.tooltip": "(No info on bounds.) Default value is 0.",
+  "options.RNGOptions.gaussianValue.tooltip": "No info on bounds. Default value is 0.0.",
   "options.RNGOptions.legacy": "Legacy Disable",
   "options.RNGOptions.legacySeed": "Number output by Legacy",
-  "options.RNGOptions.legacy.tooltip": "Controls some structures, especially older ones like fortresses and strongholds.",
+  "options.RNGOptions.legacy.tooltip": "Controls pretty much any aspect of world generation not controlled by Xoroshiro128++, like structures and loot tables. In this mod this also controls the unique seed generation function.",
   "options.RNGOptions.legacySeed.tooltip": "Must be larger than ?. Default value is the max.",
   "options.RNGOptions.mobFix": "Fix Mobs",
   "options.RNGOptions.mobFix.tooltip": "Fixes a problem when disabling Legacy Random where mob UUIDs will not be random, causing them to fail spawning.",
   "options.RNGOptions.singleThreaded": "Single Threaded Disable",
   "options.RNGOptions.singleThreadedSeed": "Number output by Single Threaded",
-  "options.RNGOptions.singleThreaded.tooltip": "Controls spawn location(?) and ?.",
+  "options.RNGOptions.singleThreaded.tooltip": "Controls particle spawning, stars, and other random elements mainly related to rendering.",
   "options.RNGOptions.singleThreadedSeed.tooltip": "Must be larger than ?. Default value is the max.",
   "options.RNGOptions.threadSafeLegacy": "Thread Safe Legacy Disable",
   "options.RNGOptions.threadSafeLegacySeed": "Number output by Thread Safe Legacy",
@@ -23,5 +25,5 @@
   "options.RNGOptions.xoroshiro": "Xoroshiro128++ Disable",
   "options.RNGOptions.xoroshiroSeed": "Number output by Xoroshiro",
   "options.RNGOptions.xoroshiro.tooltip": "Controls most world generation, including caves and features.",
-  "options.RNGOptions.xoroshiroSeed.tooltip": "Must be larger than 7046029254386353131. Default value is the max."
+  "options.RNGOptions.xoroshiroSeed.tooltip": "With some certainty, must be larger than 2701463235000000000. 2300000000000000000 or lower will crash; between will lead to somewhat unpredictable issues. Some values higher will also crash; the exact criteria is unclear. Default value is the max."
 }

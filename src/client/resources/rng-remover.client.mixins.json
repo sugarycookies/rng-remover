@@ -12,6 +12,7 @@
   "mixins": [
     "CreateWorldScreenMixin",
     "MoreTabMixin",
+    "SkyRendererMixin",
     "WorldCreationUIStateMixin"
   ]
 }

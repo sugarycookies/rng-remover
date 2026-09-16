@@ -38,6 +38,8 @@ public class RNGOptionsScreen extends Screen {
 
     private static final Component MOB_FIX = Component.translatable("options.RNGOptions.mobFix");
     private static final Tooltip MOB_FIX_TOOLTIP = Tooltip.create(Component.translatable("options.RNGOptions.mobFix.tooltip"));
+    private static final Component UNFIX_FARLANDS = Component.translatable("options.RNGButton.farlands");
+    private static final Tooltip UNFIX_FARLANDS_TOOLTIP = Tooltip.create(Component.translatable("options.RNGButton.farlands.tooltip"));
 
     private static final Component XOROSHIRO_SEED = Component.translatable("options.RNGOptions.xoroshiroSeed");
     private static final Component LEGACY_SEED = Component.translatable("options.RNGOptions.legacySeed");
@@ -86,6 +88,7 @@ public class RNGOptionsScreen extends Screen {
         gridHelper.addChild(this.createGaussianButton());
         gridHelper.addChild(this.createGaussianValueButton());
         gridHelper.addChild(this.createUUIDsButton());
+        gridHelper.addChild(this.createFarlandsButton());
         this.layout.addToFooter(Button.builder(CommonComponents.GUI_DONE, (var1) -> this.onClose()).width(200).build());
         this.layout.visitWidgets((x$0) -> this.addRenderableWidget(x$0));
         this.state.onChanged();
@@ -233,12 +236,6 @@ public class RNGOptionsScreen extends Screen {
         this.state.addListener((data) -> {
             this.onRNGChange();
             gauButton.setValue(((WorldDataRNGDataAccessor)data).getGaussianState());
-            if (((WorldDataRNGDataAccessor)data).getXoroshiroState() && ((WorldDataRNGDataAccessor)data).getLegacyState() && ((WorldDataRNGDataAccessor)data).getSingleThreadedState()) {
-                gauButton.active = false;
-                gauButton.setValue(true);
-            } else {
-                gauButton.active = true;
-            }
         });
         return gauButton;
     }
@@ -286,6 +283,20 @@ public class RNGOptionsScreen extends Screen {
 
         });
         return UUIDButton;
+    }
+
+    private CycleButton<Boolean> createFarlandsButton() {
+        CycleButton<Boolean> farlandsButton = CycleButton.onOffBuilder(uiRNGData.unfixFarlands()).create(UNFIX_FARLANDS, (var1, value) -> {
+            uiRNGData.setUnfixFarlands(value);
+            this.state.onChanged();
+        });
+        farlandsButton.active = true;
+        farlandsButton.setTooltip(UNFIX_FARLANDS_TOOLTIP);
+        this.state.addListener((data) -> {
+            this.onRNGChange();
+            farlandsButton.setValue(((WorldDataRNGDataAccessor)data).getUnfixFarlands());
+        });
+        return farlandsButton;
     }
 
     protected void repositionElements() {

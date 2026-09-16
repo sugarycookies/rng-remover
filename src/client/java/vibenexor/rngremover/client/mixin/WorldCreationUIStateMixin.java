@@ -95,6 +95,11 @@ public abstract class WorldCreationUIStateMixin implements WorldDataRNGDataAcces
     }
 
     @Override
+    public boolean getUnfixFarlands() {
+        return this.rngState.unfixFarlands();
+    }
+
+    @Override
     public String getXoroshiroSeedS() {
         long x = this.rngState.xoroshiroSeed();
         return Long.toString(x);
@@ -124,47 +129,63 @@ public abstract class WorldCreationUIStateMixin implements WorldDataRNGDataAcces
         return Double.toString(x);
     }
 
+    @Override
     public void setXoroshiroState(boolean x) {
         this.rngState.setDisableXoroshiro(x);
     }
 
+    @Override
     public void setLegacyState(boolean x) {
         this.rngState.setDisableLegacy(x);
     }
 
+    @Override
     public void setSingleThreadedState(boolean x) {
         this.rngState.setDisableSingleThreaded(x);
     }
 
+    @Override
     public void setThreadSafeLegacyState(boolean x) {
         this.rngState.setDisableThreadSafeLegacy(x);
     }
 
+    @Override
     public void setGaussianState(boolean x) {
         this.rngState.setDisableGaussian(x);
     }
 
+    @Override
     public void setXoroshiroSeed(String x) {
         this.rngState.setXoroshiroSeed(x);
     }
 
+    @Override
     public void setLegacySeed(String x) {
         this.rngState.setLegacySeed(x);
     }
 
+    @Override
     public void setSingleThreadedSeed(String x) {
         this.rngState.setSingleThreadedSeed(x);
     }
 
+    @Override
     public void setThreadSafeLegacySeed(String x) {
         this.rngState.setThreadSafeLegacySeed(x);
     }
 
+    @Override
     public void setGaussianValue(String x) throws NoSuchAlgorithmException {
         this.rngState.setGaussianValue(x);
     }
 
+    @Override
     public void setUUIDState(boolean x) {
         this.rngState.setUUIDs(x);
+    }
+
+    @Override
+    public void setUnfixFarlands(boolean x) {
+        this.rngState.setUnfixFarlands(x);
     }
 }
