@@ -17,7 +17,7 @@
   "options.RNGOptions.singleThreaded.tooltip": "Controls some particle aspects, stars, and elements mainly related to rendering.",
   "options.RNGOptions.singleThreadedSeed.tooltip": "Must be larger than ?. Default value is the max.",
   "options.RNGOptions.structureFix": "Fix Structures",
-  "options.RNGOptions.structureFix.tooltip": "Fixes a problem when disabling Legacy Random where legacy structures (strongholds and nether fortresses) fail to spawn. With this enabled, the game is made completable again.",
+  "options.RNGOptions.structureFix.tooltip": "Fixes a problem when disabling Legacy Random where some structures fail to spawn. With this enabled, the game is made completable again (only forces a fix for strongholds and nether fortresses, other structures may still be broken).",
   "options.RNGOptions.threadSafeLegacy": "Thread Safe Legacy Disable",
   "options.RNGOptions.threadSafeLegacySeed": "Number output by Thread Safe Legacy",
   "options.RNGOptions.threadSafeLegacy.tooltip": "Controls some sounds, including placing blocks and hitting mobs.",
