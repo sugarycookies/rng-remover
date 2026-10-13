@@ -12,7 +12,8 @@ public interface RandomSourceMixin {
 
   @Inject(at = @At("HEAD"), method = "create()Lnet/minecraft/util/RandomSource;", cancellable = true)
   private static void rngremover$create(CallbackInfoReturnable<RandomSource> cir) {
-
-    cir.setReturnValue(RandomSource.create(RNGData.legacySeed));
+    if (RNGData.disableLegacy) {
+      cir.setReturnValue(RandomSource.create(RNGData.legacySeed));
+    }
   }
 }

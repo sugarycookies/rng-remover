@@ -18,17 +18,21 @@ public abstract class LegacyRandomSourceMixin implements BitRandomSource {
 
   @Shadow @Final private AtomicLong seed;
 
-  @Inject(method = "setSeed", at = @At("HEAD"))
+  @Inject(method = "setSeed", at = @At("HEAD"), cancellable = true)
   private void rngremover$setSeed(long seed, CallbackInfo ci) {
     if (RNGData.disableLegacy) {
       this.seed.set(RNGData.legacySeed);
+      ci.cancel();
     }
   }
 
   @Inject(method = "next", at = @At("HEAD"), cancellable = true)
   public void rngremover$next(final int bits, CallbackInfoReturnable<Integer> cir) {
     if (RNGData.disableLegacy) {
-      cir.setReturnValue((int)(RNGData.legacySeed >> (48 - bits)));
+      if (bits <= 0) {
+        cir.setReturnValue((int) (RNGData.legacySeed >> 63));
+      }
+      cir.setReturnValue((int)(RNGData.legacySeed >> (64 - bits)));
     }
   }
 }

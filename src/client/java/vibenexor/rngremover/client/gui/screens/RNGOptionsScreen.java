@@ -7,7 +7,6 @@ import net.minecraft.client.gui.layouts.LayoutSettings;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.worldselection.CreateWorldScreen;
 import net.minecraft.client.gui.screens.worldselection.WorldCreationUiState;
-import net.minecraft.client.server.IntegratedServer;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -16,8 +15,6 @@ import vibenexor.rngremover.WorldDataRNGDataAccessor;
 import vibenexor.rngremover.client.CreateWorldScreenRNGHaver;
 
 import java.security.NoSuchAlgorithmException;
-
-import static java.lang.IO.print;
 
 // currently modeling off of WorldOptionsScreen & CreateWorldScreen, right now it doesn't connect to anything because
 // idrk how to actually do that lol. also button states for Gaussian and UUIDs need to be updated in relation to others
@@ -40,6 +37,8 @@ public class RNGOptionsScreen extends Screen {
     private static final Tooltip MOB_FIX_TOOLTIP = Tooltip.create(Component.translatable("options.RNGOptions.mobFix.tooltip"));
     private static final Component UNFIX_FARLANDS = Component.translatable("options.RNGButton.farlands");
     private static final Tooltip UNFIX_FARLANDS_TOOLTIP = Tooltip.create(Component.translatable("options.RNGButton.farlands.tooltip"));
+    private static final Component STRUCTURE_FIX = Component.translatable("options.RNGOptions.structureFix");
+    private static final Tooltip STRUCTURE_FIX_TOOLTIP = Tooltip.create(Component.translatable("options.RNGOptions.structureFix.tooltip"));
 
     private static final Component XOROSHIRO_SEED = Component.translatable("options.RNGOptions.xoroshiroSeed");
     private static final Component LEGACY_SEED = Component.translatable("options.RNGOptions.legacySeed");
@@ -89,6 +88,7 @@ public class RNGOptionsScreen extends Screen {
         gridHelper.addChild(this.createGaussianValueButton());
         gridHelper.addChild(this.createUUIDsButton());
         gridHelper.addChild(this.createFarlandsButton());
+        gridHelper.addChild(this.createStructureButton());
         this.layout.addToFooter(Button.builder(CommonComponents.GUI_DONE, (var1) -> this.onClose()).width(200).build());
         this.layout.visitWidgets((x$0) -> this.addRenderableWidget(x$0));
         this.state.onChanged();
@@ -96,7 +96,7 @@ public class RNGOptionsScreen extends Screen {
     }
 
     private CycleButton<Boolean> createXoroshiroButton() {
-        CycleButton<Boolean> xorButton = CycleButton.onOffBuilder(uiRNGData.disableXoroshiro()).create(XOROSHIRO, (var1, value) -> {
+        CycleButton<Boolean> xorButton = CycleButton.onOffBuilder(uiRNGData.disableXoroshiro()).withTooltip(value -> XOROSHIRO_TOOLTIP).create(XOROSHIRO, (var1, value) -> {
             uiRNGData.setDisableXoroshiro(value);
             this.state.onChanged();
         });
@@ -129,7 +129,7 @@ public class RNGOptionsScreen extends Screen {
     }
 
     private CycleButton<Boolean> createLegacyButton() {
-        CycleButton<Boolean> legButton = CycleButton.onOffBuilder(uiRNGData.disableLegacy()).create(LEGACY, (var1, value) -> {
+        CycleButton<Boolean> legButton = CycleButton.onOffBuilder(uiRNGData.disableLegacy()).withTooltip(value -> LEGACY_TOOLTIP).create(LEGACY, (var1, value) -> {
             uiRNGData.setDisableLegacy(value);
             this.state.onChanged();
         });
@@ -162,7 +162,7 @@ public class RNGOptionsScreen extends Screen {
     }
 
     private CycleButton<Boolean> createSingleThreadedButton() {
-        CycleButton<Boolean> sinButton = CycleButton.onOffBuilder(uiRNGData.disableSingleThreaded()).create(SINGLE_THREADED, (var1, value) -> {
+        CycleButton<Boolean> sinButton = CycleButton.onOffBuilder(uiRNGData.disableSingleThreaded()).withTooltip(value -> SINGLE_THREADED_TOOLTIP).create(SINGLE_THREADED, (var1, value) -> {
             uiRNGData.setDisableSingleThreaded(value);
             this.state.onChanged();
         });
@@ -194,7 +194,7 @@ public class RNGOptionsScreen extends Screen {
     }
 
     private CycleButton<Boolean> createThreadSafeLegacyButton() {
-        CycleButton<Boolean> thrButton = CycleButton.onOffBuilder(uiRNGData.disableThreadSafeLegacy()).create(THREAD_SAFE, (var1, value) -> {
+        CycleButton<Boolean> thrButton = CycleButton.onOffBuilder(uiRNGData.disableThreadSafeLegacy()).withTooltip(value -> THREAD_SAFE_TOOLTIP).create(THREAD_SAFE, (var1, value) -> {
             uiRNGData.setDisableThreadSafeLegacy(value);
             this.state.onChanged();
         });
@@ -227,7 +227,7 @@ public class RNGOptionsScreen extends Screen {
     }
 
     private CycleButton<Boolean> createGaussianButton() {
-        CycleButton<Boolean> gauButton = CycleButton.onOffBuilder(uiRNGData.disableGaussian()).create(GAUSSIAN, (var1, value) -> {
+        CycleButton<Boolean> gauButton = CycleButton.onOffBuilder(uiRNGData.disableGaussian()).withTooltip(value -> GAUSSIAN_TOOLTIP).create(GAUSSIAN, (var1, value) -> {
             uiRNGData.setDisableGaussian(value);
             this.state.onChanged();
         });
@@ -266,7 +266,7 @@ public class RNGOptionsScreen extends Screen {
     }
 
     private CycleButton<Boolean> createUUIDsButton() {
-        CycleButton<Boolean> UUIDButton = CycleButton.onOffBuilder(uiRNGData.forceUUIDsRandom()).create(MOB_FIX, (var1, value) -> {
+        CycleButton<Boolean> UUIDButton = CycleButton.onOffBuilder(uiRNGData.forceUUIDsRandom()).withTooltip(value -> MOB_FIX_TOOLTIP).create(MOB_FIX, (var1, value) -> {
             uiRNGData.setUUIDs(value);
             this.state.onChanged();
         });
@@ -280,13 +280,12 @@ public class RNGOptionsScreen extends Screen {
             } else {
                 UUIDButton.active = true;
             }
-
         });
         return UUIDButton;
     }
 
     private CycleButton<Boolean> createFarlandsButton() {
-        CycleButton<Boolean> farlandsButton = CycleButton.onOffBuilder(uiRNGData.unfixFarlands()).create(UNFIX_FARLANDS, (var1, value) -> {
+        CycleButton<Boolean> farlandsButton = CycleButton.onOffBuilder(uiRNGData.unfixFarlands()).withTooltip(value -> UNFIX_FARLANDS_TOOLTIP).create(UNFIX_FARLANDS, (var1, value) -> {
             uiRNGData.setUnfixFarlands(value);
             this.state.onChanged();
         });
@@ -297,6 +296,25 @@ public class RNGOptionsScreen extends Screen {
             farlandsButton.setValue(((WorldDataRNGDataAccessor)data).getUnfixFarlands());
         });
         return farlandsButton;
+    }
+
+    private CycleButton<Boolean> createStructureButton() {
+        CycleButton<Boolean> structureButton = CycleButton.onOffBuilder(uiRNGData.forceStructuresSpawn()).withTooltip(value -> STRUCTURE_FIX_TOOLTIP).create(STRUCTURE_FIX, (var1, value) -> {
+            uiRNGData.setForceStructureSpawn(value);
+            this.state.onChanged();
+        });
+        structureButton.active = true;
+        structureButton.setTooltip(STRUCTURE_FIX_TOOLTIP);
+        this.state.addListener((data) -> {
+            this.onRNGChange();
+            if (!((WorldDataRNGDataAccessor)data).getLegacyState()) {
+                structureButton.active = false;
+                structureButton.setValue(false);
+            } else {
+                structureButton.active = true;
+            }
+        });
+        return structureButton;
     }
 
     protected void repositionElements() {

@@ -8,10 +8,8 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
 @Mixin(RandomSequences.DirtyMarkingRandomSource.class)
 public class DirtyMarkingRandomSourceMixin {
-
   @ModifyVariable(method = "<init>", at = @At("HEAD"))
   private static RandomSource rngremover$init(RandomSource random) {
-
     return RandomSource.create();
   }
 }

@@ -22,7 +22,8 @@ public class RNGData {
           Codec.LONG.fieldOf("threadSafeLegacySeed").forGetter(RNGData::threadSafeLegacySeed),
           Codec.DOUBLE.fieldOf("gaussianValue").forGetter(RNGData::gaussianValue),
           Codec.BOOL.fieldOf("forceUUIDsRandom").forGetter(RNGData::forceUUIDsRandom),
-          Codec.BOOL.fieldOf("unfixFarlands").forGetter(RNGData::unfixFarlands)
+          Codec.BOOL.fieldOf("unfixFarlands").forGetter(RNGData::unfixFarlands),
+          Codec.BOOL.fieldOf("forceStructuresSpawn").forGetter(RNGData::forceStructuresSpawn)
           ).apply(i, RNGData::new)
   );
   //so presumably the RNGData per world will have to be stored somewhere eventually so that when you load a world again
@@ -46,8 +47,9 @@ public class RNGData {
 
   public static boolean forceUUIDsRandom = false; //if legacy is enabled this shouldn't matter
   public static boolean unfixFarlands = false;
+  public static boolean forceStructureSpawn = false;
 
-  public RNGData(boolean dX, boolean dL, boolean dST, boolean dTSL, boolean dG, long xS, long lS, long sTS, long tSLS, double gV, boolean fUR, boolean uFA) {
+  public RNGData(boolean dX, boolean dL, boolean dST, boolean dTSL, boolean dG, long xS, long lS, long sTS, long tSLS, double gV, boolean fUR, boolean uFA,boolean fSS) {
     disableXoroshiro = dX;
     disableLegacy = dL;
     disableSingleThreaded = dST;
@@ -62,19 +64,24 @@ public class RNGData {
 
     forceUUIDsRandom = fUR;
     unfixFarlands = uFA;
+    forceStructureSpawn = fSS;
   }
 
   public RNGData() {
 
   }
 
-  public static RNGData of(boolean dX, boolean dL, boolean dST, boolean dTSL, boolean dG, long xS, long lS, long sTS, long tSLS, double gV, boolean fUR, boolean uFA) {
-    RNGData rng = new RNGData(dX, dL, dST, dTSL, dG, xS, lS, sTS, tSLS, gV, fUR, uFA);
+  public static void resetData() {
+    new RNGData(false, false, false, false, false, Long.MAX_VALUE, Long.MAX_VALUE, Long.MAX_VALUE, Long.MAX_VALUE, 0.0d, false, false, false);
+  }
+
+  public static RNGData of(boolean dX, boolean dL, boolean dST, boolean dTSL, boolean dG, long xS, long lS, long sTS, long tSLS, double gV, boolean fUR, boolean uFA, boolean fSS) {
+    RNGData rng = new RNGData(dX, dL, dST, dTSL, dG, xS, lS, sTS, tSLS, gV, fUR, uFA, fSS);
     return rng;
   }
 
   public static RNGData of(RNGData data) {
-    RNGData rng = RNGData.of(data.disableXoroshiro(), data.disableLegacy(), data.disableSingleThreaded(), data.disableThreadSafeLegacy(), data.disableGaussian(), data.xoroshiroSeed(), data.legacySeed(), data.singleThreadedSeed(), data.threadSafeLegacySeed(), data.gaussianValue(), data.forceUUIDsRandom(), data.unfixFarlands());
+    RNGData rng = RNGData.of(data.disableXoroshiro(), data.disableLegacy(), data.disableSingleThreaded(), data.disableThreadSafeLegacy(), data.disableGaussian(), data.xoroshiroSeed(), data.legacySeed(), data.singleThreadedSeed(), data.threadSafeLegacySeed(), data.gaussianValue(), data.forceUUIDsRandom(), data.unfixFarlands(), data.forceStructuresSpawn());
     return rng;
   }
 
@@ -152,6 +159,10 @@ public class RNGData {
     unfixFarlands = u;
   }
 
+  public void setForceStructureSpawn(boolean f) {
+    forceStructureSpawn = f;
+  }
+
   //just to make the codec work
   public boolean disableXoroshiro() {
     return disableXoroshiro;
@@ -199,5 +210,9 @@ public class RNGData {
 
   public boolean unfixFarlands() {
     return unfixFarlands;
+  }
+
+  public boolean forceStructuresSpawn() {
+    return forceStructureSpawn;
   }
 }

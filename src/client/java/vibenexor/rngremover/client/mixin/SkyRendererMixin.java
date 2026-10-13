@@ -1,14 +1,12 @@
 package vibenexor.rngremover.client.mixin;
-
-import com.mojang.blaze3d.PrimitiveTopology;
-import com.mojang.blaze3d.buffers.GpuBuffer;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.ByteBufferBuilder;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.MeshData;
+import com.mojang.renderpearl.api.buffers.GpuBuffer;
+import com.mojang.renderpearl.api.pipeline.PrimitiveTopology;
 import net.minecraft.client.renderer.SkyRenderer;
-import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import org.joml.Matrix3f;
 import org.joml.Vector3f;
@@ -20,7 +18,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import vibenexor.rngremover.RNGData;
 
 @Mixin(SkyRenderer.class)
-public class SkyRendererMixin {
+public abstract class SkyRendererMixin implements AutoCloseable {
     @Shadow
     private int starIndexCount;
 
@@ -29,7 +27,7 @@ public class SkyRendererMixin {
         if (RNGData.disableSingleThreaded) {
             RandomSource random = RandomSource.createThreadLocalInstance(10842L);
 
-            GpuBuffer var19;
+            com.mojang.renderpearl.api.buffers.GpuBuffer var19;
             try (ByteBufferBuilder byteBufferBuilder = ByteBufferBuilder.exactlySized(DefaultVertexFormat.POSITION.getVertexSize() * 1500 * 4)) {
                 BufferBuilder bufferBuilder = new BufferBuilder(byteBufferBuilder, PrimitiveTopology.QUADS, DefaultVertexFormat.POSITION);
 

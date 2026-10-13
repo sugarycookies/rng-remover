@@ -100,6 +100,11 @@ public abstract class WorldCreationUIStateMixin implements WorldDataRNGDataAcces
     }
 
     @Override
+    public boolean getForceStructuresSpawn() {
+        return this.rngState.forceStructuresSpawn();
+    }
+
+    @Override
     public String getXoroshiroSeedS() {
         long x = this.rngState.xoroshiroSeed();
         return Long.toString(x);
@@ -187,5 +192,10 @@ public abstract class WorldCreationUIStateMixin implements WorldDataRNGDataAcces
     @Override
     public void setUnfixFarlands(boolean x) {
         this.rngState.setUnfixFarlands(x);
+    }
+
+    @Override
+    public void setForceStructureSpawn(boolean x) {
+        this.rngState.setForceStructureSpawn(x);
     }
 }

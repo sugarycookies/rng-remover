@@ -25,9 +25,9 @@ public abstract class SingleThreadedRandomSourceMixin implements BitRandomSource
   @Inject(method = "next", at = @At("HEAD"), cancellable = true)
   public void rngremover$next(final int bits, CallbackInfoReturnable<Integer> cir) {
     if (RNGData.disableSingleThreaded) {
-      long constrained = (int) (RNGData.singleThreadedSeed >> (48 - bits));
+      long constrained = (RNGData.singleThreadedSeed >> (64 - bits));
       if (constrained < 0) {
-        cir.setReturnValue(0);
+        cir.setReturnValue((int) (RNGData.singleThreadedSeed >> 63));
       } else {
         cir.setReturnValue((int)constrained);
       }

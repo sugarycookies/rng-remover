@@ -26,7 +26,7 @@ public class ThreadSafeLegacyRandomSourceMixin {
   @Inject(at = @At("HEAD"), method = "next", cancellable = true)
   private void rngremover$next(int bits, CallbackInfoReturnable<Integer> cir) {
     if (RNGData.disableThreadSafeLegacy) {
-      cir.setReturnValue((int)(RNGData.threadSafeLegacySeed >> (48 - bits)));
+      cir.setReturnValue((int)(RNGData.threadSafeLegacySeed >>> (64 - bits)));
     }
   }
 }

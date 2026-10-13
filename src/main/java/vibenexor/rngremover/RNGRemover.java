@@ -31,6 +31,7 @@ public class RNGRemover implements ModInitializer {
 				String gaus = Double.toString(RNGData.gaussianValue);
 				String uuid;
 				String farl;
+				String fstr;
 				if (RNGData.disableXoroshiro) {
 					xor = "Disabled";
 				} else {
@@ -66,7 +67,12 @@ public class RNGRemover implements ModInitializer {
 				} else {
 					farl = "Normal";
 				}
-                context.getSource().sendSuccess(() -> Component.translatable("commands.getrngstate", xor, xors, leg, legs, sin, sins, thr, thrs, gau, gaus, uuid, farl), false);
+				if (RNGData.forceStructureSpawn) {
+					fstr = "On";
+				} else {
+					fstr = "Off";
+				}
+                context.getSource().sendSuccess(() -> Component.translatable("commands.getrngstate", xor, xors, leg, legs, sin, sins, thr, thrs, gau, gaus, uuid, farl, fstr), false);
 				return 1;
 			}));
 		});

@@ -23,6 +23,7 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 import vibenexor.rngremover.RNGData;
 import vibenexor.rngremover.WorldDataRNGDataAccessor;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
@@ -84,8 +85,8 @@ public abstract class PrimaryLevelDataMixin implements ServerLevelData, WorldDat
     public RNGData RNGState;
 
     //initial values for the RNGData, which is just normal stuff
-    @Inject(method = "<init>(Ljava/util/UUID;ZLnet/minecraft/world/level/storage/LevelData$RespawnData;JIZLjava/util/Set;Ljava/util/Set;Lnet/minecraft/world/level/LevelSettings;Lnet/minecraft/world/level/storage/PrimaryLevelData$SpecialWorldProperty;Lcom/mojang/serialization/Lifecycle;)V", at = @At("TAIL"))
-    private void rngremover$addsettings(final @Nullable UUID singlePlayerUUID, final boolean wasModded, final LevelData.RespawnData respawnData, final long gameTime, final int version, final boolean initialized, final Set<String> knownServerBrands, final Set<String> removedFeatureFlags, final LevelSettings settings, final PrimaryLevelData.SpecialWorldProperty specialWorldProperty, final Lifecycle worldGenSettingsLifecycle, CallbackInfo ci) {
+    @Inject(method = "<init>(Ljava/util/UUID;ZLnet/minecraft/world/level/storage/LevelData$RespawnData;JIZLjava/util/Set;Ljava/util/Set;Lnet/minecraft/world/level/LevelSettings;Lnet/minecraft/world/level/storage/PrimaryLevelData$SpecialWorldProperty;Lcom/mojang/serialization/Lifecycle;Ljava/util/List;)V", at = @At("TAIL"))
+    private void rngremover$addsettings(UUID singlePlayerUUID, boolean wasModded, RespawnData respawnData, long gameTime, int version, boolean initialized, Set knownServerBrands, Set removedFeatureFlags, LevelSettings settings, PrimaryLevelData.SpecialWorldProperty specialWorldProperty, Lifecycle worldGenSettingsLifecycle, List versionHistory, CallbackInfo ci) {
         RNGState = new RNGData();
     }
 
