@@ -10,6 +10,8 @@
     "MinecraftServerMixin",
     "MthMixin",
     "NetherBridgePieceMixin",
+    "NormalNoiseMixin",
+    "OctaveInfoMixin",
     "PrimaryLevelDataMixin",
     "RandomSourceMixin",
     "RandomSupportMixin",

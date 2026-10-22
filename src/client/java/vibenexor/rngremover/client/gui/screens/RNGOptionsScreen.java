@@ -39,6 +39,8 @@ public class RNGOptionsScreen extends Screen {
     private static final Tooltip UNFIX_FARLANDS_TOOLTIP = Tooltip.create(Component.translatable("options.RNGButton.farlands.tooltip"));
     private static final Component STRUCTURE_FIX = Component.translatable("options.RNGOptions.structureFix");
     private static final Tooltip STRUCTURE_FIX_TOOLTIP = Tooltip.create(Component.translatable("options.RNGOptions.structureFix.tooltip"));
+    private static final Component FORCE_NOISE_REPETITION = Component.translatable("options.RNGOptions.noiseRepetition");
+    private static final Tooltip FORCE_NOISE_REPETITION_TOOLTIP = Tooltip.create(Component.translatable("options.RNGOptions.noiseRepetition.tooltip"));
 
     private static final Component XOROSHIRO_SEED = Component.translatable("options.RNGOptions.xoroshiroSeed");
     private static final Component LEGACY_SEED = Component.translatable("options.RNGOptions.legacySeed");
@@ -89,6 +91,7 @@ public class RNGOptionsScreen extends Screen {
         gridHelper.addChild(this.createUUIDsButton());
         gridHelper.addChild(this.createFarlandsButton());
         gridHelper.addChild(this.createStructureButton());
+        gridHelper.addChild(this.createNoiseRepetitionButton());
         this.layout.addToFooter(Button.builder(CommonComponents.GUI_DONE, (var1) -> this.onClose()).width(200).build());
         this.layout.visitWidgets((x$0) -> this.addRenderableWidget(x$0));
         this.state.onChanged();
@@ -315,6 +318,20 @@ public class RNGOptionsScreen extends Screen {
             }
         });
         return structureButton;
+    }
+
+    private CycleButton<Boolean> createNoiseRepetitionButton() {
+        CycleButton<Boolean> noiseRepetitionButton = CycleButton.onOffBuilder(uiRNGData.forceNoiseRepeat()).withTooltip(value -> FORCE_NOISE_REPETITION_TOOLTIP).create(FORCE_NOISE_REPETITION, (var1, value) -> {
+            uiRNGData.setForceNoiseRepeat(value);
+            this.state.onChanged();
+        });
+        noiseRepetitionButton.active = true;
+        noiseRepetitionButton.setTooltip(FORCE_NOISE_REPETITION_TOOLTIP);
+        this.state.addListener((data) -> {
+            this.onRNGChange();
+            noiseRepetitionButton.setValue(((WorldDataRNGDataAccessor)data).getForceNoiseRepeat());
+        });
+        return noiseRepetitionButton;
     }
 
     protected void repositionElements() {

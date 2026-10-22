@@ -105,6 +105,11 @@ public abstract class WorldCreationUIStateMixin implements WorldDataRNGDataAcces
     }
 
     @Override
+    public boolean getForceNoiseRepeat() {
+        return this.rngState.forceNoiseRepeat();
+    }
+
+    @Override
     public String getXoroshiroSeedS() {
         long x = this.rngState.xoroshiroSeed();
         return Long.toString(x);

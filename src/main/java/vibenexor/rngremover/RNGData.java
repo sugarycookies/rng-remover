@@ -23,14 +23,10 @@ public class RNGData {
           Codec.DOUBLE.fieldOf("gaussianValue").forGetter(RNGData::gaussianValue),
           Codec.BOOL.fieldOf("forceUUIDsRandom").forGetter(RNGData::forceUUIDsRandom),
           Codec.BOOL.fieldOf("unfixFarlands").forGetter(RNGData::unfixFarlands),
-          Codec.BOOL.fieldOf("forceStructuresSpawn").forGetter(RNGData::forceStructuresSpawn)
+          Codec.BOOL.fieldOf("forceStructuresSpawn").forGetter(RNGData::forceStructuresSpawn),
+          Codec.BOOL.fieldOf("forceNoiseRepeat").forGetter(RNGData::forceNoiseRepeat)
           ).apply(i, RNGData::new)
   );
-  //so presumably the RNGData per world will have to be stored somewhere eventually so that when you load a world again
-  //it knows what RNGData to use. but also the codec is used in PrimaryLevelData already in rngremover$settagdata,
-  //the normal setTagData function seems to be putting all of the PrimaryLevelData onto one tag. this tag is what ends
-  //up saved as level.dat, so this should mean that the RNGData gets saved already and we don't have to worry more about
-  //that hopefully
 
   public static boolean disableXoroshiro = false;
   public static boolean disableLegacy = false;
@@ -48,8 +44,9 @@ public class RNGData {
   public static boolean forceUUIDsRandom = false; //if legacy is enabled this shouldn't matter
   public static boolean unfixFarlands = false;
   public static boolean forceStructureSpawn = false;
+  public static boolean forceNoiseRepeat = false;
 
-  public RNGData(boolean dX, boolean dL, boolean dST, boolean dTSL, boolean dG, long xS, long lS, long sTS, long tSLS, double gV, boolean fUR, boolean uFA,boolean fSS) {
+  public RNGData(boolean dX, boolean dL, boolean dST, boolean dTSL, boolean dG, long xS, long lS, long sTS, long tSLS, double gV, boolean fUR, boolean uFA, boolean fSS, boolean fNR) {
     disableXoroshiro = dX;
     disableLegacy = dL;
     disableSingleThreaded = dST;
@@ -65,6 +62,7 @@ public class RNGData {
     forceUUIDsRandom = fUR;
     unfixFarlands = uFA;
     forceStructureSpawn = fSS;
+    forceNoiseRepeat = fNR;
   }
 
   public RNGData() {
@@ -72,16 +70,16 @@ public class RNGData {
   }
 
   public static void resetData() {
-    new RNGData(false, false, false, false, false, Long.MAX_VALUE, Long.MAX_VALUE, Long.MAX_VALUE, Long.MAX_VALUE, 0.0d, false, false, false);
+    new RNGData(false, false, false, false, false, Long.MAX_VALUE, Long.MAX_VALUE, Long.MAX_VALUE, Long.MAX_VALUE, 0.0d, false, false, false, false);
   }
 
-  public static RNGData of(boolean dX, boolean dL, boolean dST, boolean dTSL, boolean dG, long xS, long lS, long sTS, long tSLS, double gV, boolean fUR, boolean uFA, boolean fSS) {
-    RNGData rng = new RNGData(dX, dL, dST, dTSL, dG, xS, lS, sTS, tSLS, gV, fUR, uFA, fSS);
+  public static RNGData of(boolean dX, boolean dL, boolean dST, boolean dTSL, boolean dG, long xS, long lS, long sTS, long tSLS, double gV, boolean fUR, boolean uFA, boolean fSS, boolean fNR) {
+    RNGData rng = new RNGData(dX, dL, dST, dTSL, dG, xS, lS, sTS, tSLS, gV, fUR, uFA, fSS, fNR);
     return rng;
   }
 
   public static RNGData of(RNGData data) {
-    RNGData rng = RNGData.of(data.disableXoroshiro(), data.disableLegacy(), data.disableSingleThreaded(), data.disableThreadSafeLegacy(), data.disableGaussian(), data.xoroshiroSeed(), data.legacySeed(), data.singleThreadedSeed(), data.threadSafeLegacySeed(), data.gaussianValue(), data.forceUUIDsRandom(), data.unfixFarlands(), data.forceStructuresSpawn());
+    RNGData rng = RNGData.of(data.disableXoroshiro(), data.disableLegacy(), data.disableSingleThreaded(), data.disableThreadSafeLegacy(), data.disableGaussian(), data.xoroshiroSeed(), data.legacySeed(), data.singleThreadedSeed(), data.threadSafeLegacySeed(), data.gaussianValue(), data.forceUUIDsRandom(), data.unfixFarlands(), data.forceStructuresSpawn(), data.forceNoiseRepeat());
     return rng;
   }
 
@@ -163,6 +161,10 @@ public class RNGData {
     forceStructureSpawn = f;
   }
 
+  public void setForceNoiseRepeat(boolean f) {
+    forceNoiseRepeat = f;
+  }
+
   //just to make the codec work
   public boolean disableXoroshiro() {
     return disableXoroshiro;
@@ -214,5 +216,9 @@ public class RNGData {
 
   public boolean forceStructuresSpawn() {
     return forceStructureSpawn;
+  }
+
+  public boolean forceNoiseRepeat() {
+    return forceNoiseRepeat;
   }
 }

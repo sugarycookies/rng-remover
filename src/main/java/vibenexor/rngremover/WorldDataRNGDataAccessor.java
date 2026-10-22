@@ -42,6 +42,8 @@ public interface WorldDataRNGDataAccessor {
 
     boolean getForceStructuresSpawn();
 
+    boolean getForceNoiseRepeat();
+
     String getXoroshiroSeedS();
 
     String getLegacySeedS();
@@ -77,6 +79,8 @@ public interface WorldDataRNGDataAccessor {
     void setUnfixFarlands(boolean x);
 
     void setForceStructureSpawn(boolean x);
+
+    void setForceNoiseRepeat(boolean x);
 
     void PrimaryLevelDataAgain(final @Nullable UUID singlePlayerUUID, final boolean wasModded, final LevelData.RespawnData respawnData, final long gameTime, final int version, final boolean initialized, final Set<String> knownServerBrands, final Set<String> removedFeatureFlags, final LevelSettings settings, final PrimaryLevelData.SpecialWorldProperty specialWorldProperty, final Lifecycle worldGenSettingsLifecycle);
 

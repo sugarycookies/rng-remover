@@ -12,6 +12,8 @@
   "options.RNGOptions.legacySeed.tooltip": "Must be larger than ?. Default value is the max.",
   "options.RNGOptions.mobFix": "Fix Entities",
   "options.RNGOptions.mobFix.tooltip": "Fixes a problem when disabling Legacy Random where entity UUIDs are not random anymore. This includes entities like lit TNT, and even dropped items. Be extremely wary of thunderstorms with this enabled.",
+  "options.RNGOptions.noiseRepetition": "Force Noise Repetition",
+  "options.RNGOptions.noiseRepetition.tooltip": "Causes the world generation to roughly repeat every 524,288 blocks, adding to the repetitive feel.",
   "options.RNGOptions.singleThreaded": "Single Threaded Disable",
   "options.RNGOptions.singleThreadedSeed": "Number output by Single Threaded",
   "options.RNGOptions.singleThreaded.tooltip": "Controls some particle aspects, stars, and elements mainly related to rendering.",
@@ -27,5 +29,5 @@
   "options.RNGOptions.xoroshiroSeed": "Number output by Xoroshiro128++",
   "options.RNGOptions.xoroshiro.tooltip": "Controls most world generation, including caves and features, and some aspects of mob spawning such as sheep color.",
   "options.RNGOptions.xoroshiroSeed.tooltip": "With some certainty, must be larger than 2701463235000000000. Lower values will cause unpredictable issues or crash. Some higher values will also crash. Default value is the max.",
-  "commands.getrngstate": "Xoroshiro128++: %s\nXoroshiro128++ seed: %s\nLegacy: %s\nLegacy seed: %s\nSingle threaded: %s\nSingle threaded seed: %s\nThread safe legacy: %s\nThread safe legacy seed: %s\nMarsaglia polar Gaussian: %s\nMarsaglia polar Gaussian value: %s\nMob fix: %s\nFarlands state: %s\nStructure fix: %s"
+  "commands.getrngstate": "Xoroshiro128++: %s\nXoroshiro128++ seed: %s\nLegacy: %s\nLegacy seed: %s\nSingle threaded: %s\nSingle threaded seed: %s\nThread safe legacy: %s\nThread safe legacy seed: %s\nMarsaglia polar Gaussian: %s\nMarsaglia polar Gaussian value: %s\nMob fix: %s\nFarlands state: %s\nStructure fix: %s\nNoise repetition: %s"
 }
