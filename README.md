@@ -1,9 +1,5 @@
 # RNG Remover
 
-## Setup
+This mod lets you change the RNG settings in your world. The 5 RNG types it changes are Xoroshiro128++, Legacy, Single Threaded, Thread Safe Legacy, and Marsaglia Polar Gaussian. Other RNGs (such as World Gen) go through these. Other settings include Fix Entities, Fix Structures, Unfix Farlands, and Force Noise Repetition.
 
-For setup instructions, please see the [Fabric Documentation page](https://docs.fabricmc.net/develop/getting-started/creating-a-project#setting-up) related to the IDE that you are using.
-
-## License
-
-This template is available under the CC0 license. Feel free to learn from it and incorporate it in your own projects.
+Submit any bugs to the issue tracker here.
